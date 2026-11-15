@@ -1,22 +1,20 @@
 package kr.swdl.foodingredientmanagement.repository;
 
-import kr.swdl.foodingredientmanagement.dto.DisposalSerachFilterDTO;
 import kr.swdl.foodingredientmanagement.repository.entitiy.Disposals;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.sql.Timestamp;
 import java.util.Optional;
 
 @SpringBootTest
-public class JPADisposalRepositoryTest {
+public class JPADisposalsRepositoryTest {
 
     @Autowired
-    private JPADisposalRepository jpaDisposalRepository;
+    private JPADisposalsRepository jpaDisposalsRepository;
 
     @Test
     @Transactional
@@ -37,7 +35,7 @@ public class JPADisposalRepositoryTest {
                 .orderDetailId(Long.valueOf(1))
                 .build();
 
-        Assertions.assertNotNull(jpaDisposalRepository.save(disposal));
+        Assertions.assertNotNull(jpaDisposalsRepository.save(disposal));
     }
 
     @Test
@@ -59,20 +57,20 @@ public class JPADisposalRepositoryTest {
                 .orderDetailId(Long.valueOf(1))
                 .build();
 
-        Assertions.assertNotNull(jpaDisposalRepository.save(disposal));
+        Assertions.assertNotNull(jpaDisposalsRepository.save(disposal));
     }
 
     @Test
     @Transactional
     public void 특정_폐기_조회() {
-        Assertions.assertFalse(jpaDisposalRepository.findById(Long.valueOf(1)).isEmpty());
+        Assertions.assertFalse(jpaDisposalsRepository.findById(Long.valueOf(1)).isEmpty());
         // TODO: Service 계층에서 특정 폐기 조회를 통해 컬럼값을 가져와 수정가능한 상태인지 확인
     }
 
     @Test
     @Transactional
     public void 폐기_수정() {
-        Optional<Disposals> optionalDisposal = jpaDisposalRepository.findById(Long.valueOf(1));
+        Optional<Disposals> optionalDisposal = jpaDisposalsRepository.findById(Long.valueOf(1));
         Assertions.assertFalse(optionalDisposal.isEmpty());
         Disposals disposal = optionalDisposal.get();
 
@@ -81,16 +79,16 @@ public class JPADisposalRepositoryTest {
         disposal.setDisposalDetailReason("@@@@@");
         disposal.setDisposalQuantity(53);
 
-        Disposals saved = jpaDisposalRepository.save(disposal);
+        Disposals saved = jpaDisposalsRepository.save(disposal);
         Assertions.assertEquals(saved, disposal);
     }
 
     @Test
     @Transactional
     public void 폐기_삭제() {
-        Assertions.assertFalse(jpaDisposalRepository.findById(Long.valueOf(1)).isEmpty());
-        jpaDisposalRepository.deleteById(Long.valueOf(1));
-        Assertions.assertTrue(jpaDisposalRepository.findById(Long.valueOf(1)).isEmpty());
+        Assertions.assertFalse(jpaDisposalsRepository.findById(Long.valueOf(1)).isEmpty());
+        jpaDisposalsRepository.deleteById(Long.valueOf(1));
+        Assertions.assertTrue(jpaDisposalsRepository.findById(Long.valueOf(1)).isEmpty());
     }
 
     @Test

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="kr.swdl.foodingredientmanagement.repository.MBDisposalRepository">
+<mapper namespace="kr.swdl.foodingredientmanagement.repository.MBDisposalsRepository">
     <select id="getDisposals" parameterType="kr.swdl.foodingredientmanagement.dto.DisposalSerachFilterDTO" resultType="kr.swdl.foodingredientmanagement.dto.DisposalListDTO">
 
         SELECT

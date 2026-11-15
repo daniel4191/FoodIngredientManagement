@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JPADisposalAppInfoRepository extends JpaRepository<DisposalAppInfos, Long> {
+public interface JPADisposalAppInfosRepository extends JpaRepository<DisposalAppInfos, Long> {
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("""

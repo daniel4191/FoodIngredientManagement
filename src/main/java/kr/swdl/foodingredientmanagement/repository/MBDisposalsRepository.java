@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 @Mapper
-public interface MBDisposalRepository {
+public interface MBDisposalsRepository {
     public List<DisposalListDTO> getDisposals(DisposalSerachFilterDTO disposalSerachFilterDTO);
 
     public int countByTodayDisposed();

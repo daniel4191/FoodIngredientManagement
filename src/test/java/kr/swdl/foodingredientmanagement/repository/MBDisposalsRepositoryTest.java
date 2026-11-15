@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @SpringBootTest
-public class MBDisposalRepositoryTest {
+public class MBDisposalsRepositoryTest {
 
     @Autowired
-    private MBDisposalRepository mbDisposalRepository;
+    private MBDisposalsRepository mbDisposalsRepository;
 
 
     @Test
@@ -28,7 +28,7 @@ public class MBDisposalRepositoryTest {
                 .disposalType(null)
                 .processingMethod(null)
                 .sortType(null).build();
-        List<DisposalListDTO> disposals = mbDisposalRepository.getDisposals(filterDTO);
+        List<DisposalListDTO> disposals = mbDisposalsRepository.getDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
 //        System.out.println(disposals.size());
 //        System.out.println(disposals);
@@ -45,7 +45,7 @@ public class MBDisposalRepositoryTest {
                 .disposalType(null)
                 .processingMethod(null)
                 .sortType("asc").build();
-        List<DisposalListDTO> disposals = mbDisposalRepository.getDisposals(filterDTO);
+        List<DisposalListDTO> disposals = mbDisposalsRepository.getDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
 /*        System.out.println(disposals.size());
         System.out.println(disposals);*/
@@ -62,7 +62,7 @@ public class MBDisposalRepositoryTest {
                 .disposalType(null)
                 .processingMethod(null)
                 .sortType("desc").build();
-        List<DisposalListDTO> disposals = mbDisposalRepository.getDisposals(filterDTO);
+        List<DisposalListDTO> disposals = mbDisposalsRepository.getDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
        /* System.out.println(disposals.size());
         System.out.println(disposals);*/
@@ -79,7 +79,7 @@ public class MBDisposalRepositoryTest {
                 .disposalType(null)
                 .processingMethod(null)
                 .sortType(null).build();
-        List<DisposalListDTO> disposals = mbDisposalRepository.getDisposals(filterDTO);
+        List<DisposalListDTO> disposals = mbDisposalsRepository.getDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
 //        System.out.println(disposals.size());
 //        System.out.println(disposals);
@@ -96,7 +96,7 @@ public class MBDisposalRepositoryTest {
                 .disposalType(null)
                 .processingMethod(null)
                 .sortType(null).build();
-        List<DisposalListDTO> disposals = mbDisposalRepository.getDisposals(filterDTO);
+        List<DisposalListDTO> disposals = mbDisposalsRepository.getDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
 //        System.out.println(disposals.size());
 //        System.out.println(disposals);
@@ -113,7 +113,7 @@ public class MBDisposalRepositoryTest {
                 .disposalType(null)
                 .processingMethod(null)
                 .sortType(null).build();
-        List<DisposalListDTO> disposals = mbDisposalRepository.getDisposals(filterDTO);
+        List<DisposalListDTO> disposals = mbDisposalsRepository.getDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
 //        System.out.println(disposals.size());
 //        System.out.println(disposals);
@@ -130,7 +130,7 @@ public class MBDisposalRepositoryTest {
                 .disposalType(null)
                 .processingMethod(null)
                 .sortType(null).build();
-        List<DisposalListDTO> disposals = mbDisposalRepository.getDisposals(filterDTO);
+        List<DisposalListDTO> disposals = mbDisposalsRepository.getDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
 //        System.out.println(disposals.size());
 //        System.out.println(disposals);
@@ -147,7 +147,7 @@ public class MBDisposalRepositoryTest {
                 .disposalType("위생(변질)")
                 .processingMethod(null)
                 .sortType(null).build();
-        List<DisposalListDTO> disposals = mbDisposalRepository.getDisposals(filterDTO);
+        List<DisposalListDTO> disposals = mbDisposalsRepository.getDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
 //        System.out.println(disposals.size());
 //        System.out.println(disposals);
@@ -164,7 +164,7 @@ public class MBDisposalRepositoryTest {
                 .disposalType(null)
                 .processingMethod("정기폐기")
                 .sortType(null).build();
-        List<DisposalListDTO> disposals = mbDisposalRepository.getDisposals(filterDTO);
+        List<DisposalListDTO> disposals = mbDisposalsRepository.getDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
 //        System.out.println(disposals.size());
 //        System.out.println(disposals);
@@ -183,7 +183,7 @@ public class MBDisposalRepositoryTest {
                 .disposalType("입고 품질 불량")
                 .processingMethod("정기폐기")
                 .sortType("desc").build();
-        List<DisposalListDTO> disposals = mbDisposalRepository.getDisposals(filterDTO);
+        List<DisposalListDTO> disposals = mbDisposalsRepository.getDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
 //        System.out.println(disposals.size());
 //        System.out.println(disposals);
@@ -193,19 +193,19 @@ public class MBDisposalRepositoryTest {
     @Transactional
     public void 금일_폐기_건수() {
         // 테스트 폐기 추가
-        System.out.println(mbDisposalRepository.countByTodayDisposed());
+        System.out.println(mbDisposalsRepository.countByTodayDisposed());
     }
 
     @Test
     @Transactional
     public void 금일_폐기_금액() {
-        System.out.println(mbDisposalRepository.sumByTodayDisposedPrice());
+        System.out.println(mbDisposalsRepository.sumByTodayDisposedPrice());
     }
 
     @Test
     @Transactional
     public void 금일_폐기확인필요_개수() {
-        System.out.println(mbDisposalRepository.countNeedToConfirmByStoreId(3));
+        System.out.println(mbDisposalsRepository.countNeedToConfirmByStoreId(3));
     }
 
 
