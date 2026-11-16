@@ -1,0 +1,40 @@
+<insert id="insertIngredient">
+    INSERT INTO ingredients (
+    ingredient_name,
+    major_category_name,
+    sub_category_name,
+    capacity,
+    capacity_unit,
+    order_unit,
+    storage_type,
+    supply_price,
+    storage_type,
+    expiration_period,
+    management_method,
+    consumption_period,
+    summer_consumption_period,
+    supply_price,
+    supply_quantity,
+    usable_flag,
+    regist_at
+    )
+    VALUES (
+    #{ingredient_name},
+    #{major_category_name},
+    #{sub_category_name},
+    #{capacity},
+    #{capacity_unit},
+    #{order_unit},
+    #{storage_type},
+    #{supply_price},
+    #{storage_type},
+    #{expiration_period},
+    #{management_method},
+    #{consumption_period},
+    #{summer_consumption_period},
+    #{supply_price},
+    #{supply_quantity},
+    'Y',
+    NOW()
+    )
+</insert>
