@@ -1,9 +1,6 @@
 package kr.swdl.foodingredientmanagement.repository;
 
-import kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryIngredientResponse;
-import kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryListResponse;
-import kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryOrderResponse;
-import kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryUsageListResponse;
+import kr.swdl.foodingredientmanagement.controller.responseDTO.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -41,4 +38,16 @@ public interface MBInventoryRepository {
     // 사용이력
     List <InventoryUsageListResponse> findInventoryUsageList(@Param("storeId") Long storeId,
                                                              @Param("ingredientId") Long ingredientId);
+
+
+    // 직영점 전체 재고 목록 조회
+    List<StoreInventoryListResponse> findStoreInventoryList(@Param("storeId") Long storeId,
+                                                            @Param("subCategoryName") String subCategoryName,
+                                                            @Param("ingredientId") Long ingredientId);
+
+
+
 }
+
+
+

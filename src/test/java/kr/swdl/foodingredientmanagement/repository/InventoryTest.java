@@ -1,9 +1,6 @@
 package kr.swdl.foodingredientmanagement.repository;
 
-import kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryIngredientResponse;
-import kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryListResponse;
-import kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryOrderResponse;
-import kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryUsageListResponse;
+import kr.swdl.foodingredientmanagement.controller.responseDTO.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -110,10 +107,30 @@ public class InventoryTest {
 
     @Test
     void 본사_특정_직영점_특정_재고_상세_조회_사용이력(){
-       List <InventoryUsageListResponse> inventoryUsageListResponse = mbInventoryRepository.findInventoryUsageList(6L, 13L);
-        System.out.println(inventoryUsageListResponse);
+       List <InventoryUsageListResponse> list = mbInventoryRepository.findInventoryUsageList(1L, 12L);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 직영점_전체_재고_목록_조회(){
+
+        List<StoreInventoryListResponse> list = mbInventoryRepository.findStoreInventoryList(1L, null, null);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 직영점_분류_재고_목록_조회(){
+        List<StoreInventoryListResponse> list = mbInventoryRepository.findStoreInventoryList(1L, "소스류", null);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 직영점_식재료명_재고_목록_조회(){
+        List<StoreInventoryListResponse> list = mbInventoryRepository.findStoreInventoryList(1L, null, 12L);
+        list.forEach(System.out::println);
 
     }
+
 
 
 

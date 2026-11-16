@@ -79,10 +79,6 @@
         WHERE s.store_id = #{storeId};
     </select>
 
-
-
-
-
         <select id="findInventoryOrder"
                 resultType="kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryOrderResponse">
             SELECT
@@ -102,9 +98,50 @@
         </select>
 
 
+    <select id="findInventoryUsageList"
+            resultType="kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryUsageListResponse">
+
+        SELECT
+        iu.consumption_at                            AS consumptionAt,
+        iu.management_start_at                       AS managementStartAt,
+        iu.usage_quantity  AS usageQuantity,
+        i.order_unit AS orderUnit
+        FROM inventory_usages iu
+        JOIN order_details od ON iu.order_detail_id = od.order_detail_id
+        JOIN orders o         ON od.order_id        = o.order_id
+        JOIN ingredients i    ON od.ingredient_id   = i.ingredient_id
+        WHERE o.store_id       = #{storeId}
+        AND od.ingredient_id = #{ingredientId}
+        ORDER BY iu.management_start_at DESC
+
+    </select>
 
 
-
+    <select id="findStoreInventoryList"
+            resultType="kr.swdl.foodingredientmanagement.controller.responseDTO.StoreInventoryListResponse">
+        SELECT
+        s.store_name        AS storeName,
+        i.sub_category_name AS subCategoryName,
+        i.ingredient_name   AS ingredientName,
+        i.storage_type      AS storageType,
+        od.current_quantity AS currentQuantity,
+        i.order_unit        AS orderUnit,
+        u.user_name         AS userName
+        FROM order_details od
+        JOIN orders o      ON od.order_id      = o.order_id
+        JOIN stores s      ON o.store_id       = s.store_id
+        JOIN users u       ON s.user_id        = u.user_id
+        JOIN ingredients i ON od.ingredient_id = i.ingredient_id
+        WHERE od.current_quantity > 0
+        AND o.store_id = #{storeId}
+        <if test="subCategoryName != null and subCategoryName != ''">
+            AND i.sub_category_name = #{subCategoryName}
+        </if>
+        <if test="ingredientId != null">
+            AND i.ingredient_id = #{ingredientId}
+        </if>
+        ORDER BY i.sub_category_name, i.ingredient_name, od.store_at
+    </select>
 
 
 </mapper>
