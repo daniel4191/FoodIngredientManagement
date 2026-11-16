@@ -1,0 +1,121 @@
+package kr.swdl.foodingredientmanagement.repository;
+
+import kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryIngredientResponse;
+import kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryListResponse;
+import kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryOrderResponse;
+import kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryUsageListResponse;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@SpringBootTest
+public class InventoryTest {
+
+    @Autowired
+    MBInventoryRepository mbInventoryRepository;
+
+    @Test
+    void 본사_전체_재고_목록_조회(){
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList();
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 본사_식재료명_재고_목록_조회(){
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(3L, null, null, null, null, null);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 본사_직영점명_재고_목록_조회(){
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(null, 7L, null, null, null, null);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 본사_입고일시_재고_목록_조회(){
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(null, null,  LocalDate.of(2026, 10, 1), LocalDate.of(2026, 11, 16), null, null);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 본사_사용기한_재고_목록_조회(){
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(null, null, null, null,  LocalDate.of(2026, 10, 3), LocalDate.of(2026, 11, 16));
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 본사_식재료명_직영점명_재고_목록_조회(){
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(14L, 5L, null, null, null, null);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 본사_식재료명_입고일시_재고_목록_조회(){
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(14L, null, LocalDate.of(2026, 11, 1), LocalDate.of(2026, 11, 8), null, null);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 본사_식재료명_사용기한_재고_목록_조회(){
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(14L, null, null, null, LocalDate.of(2026, 11, 1), LocalDate.of(2026, 11, 8));
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 본사_직영점명_입고일시_재고_목록_조회(){
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(null, 6L, LocalDate.of(2026, 11, 1), LocalDate.of(2026, 11, 30),null, null);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 본사_직영점명_사용기한_재고_목록_조회(){
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(null, 5L, null, null,LocalDate.of(2026, 11, 1), LocalDate.of(2026, 11, 30));
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 본사_식재료명_직영점명_입고일시_재고_목록_조회(){
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(14L, 5L, LocalDate.of(2026, 11, 1), LocalDate.of(2026, 11, 30) ,null, null);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 본사_식재료명_직영점명_사용기한_재고_목록_조회(){
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(14L, 5L, null, null ,LocalDate.of(2026, 11, 1), LocalDate.of(2026, 11, 30));
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void 본사_특정_직영점_특정_재고_상세_조회_잔여수량(){
+        InventoryListResponse inventoryListResponse = mbInventoryRepository.findInventoryCurrentQuantity(6L, 13L);
+        System.out.println(inventoryListResponse);
+    }
+
+    @Test
+    void 본사_특정_직영점_특정_재고_상세_조회_식재료정보(){
+        InventoryIngredientResponse inventoryIngredientResponse = mbInventoryRepository.findInventoryIngredient(6L, 13L);
+        System.out.println(inventoryIngredientResponse);
+
+    }
+
+    @Test
+    void 본사_특정_직영점_특정_재고_상세_조회_입고정보(){
+        InventoryOrderResponse inventoryOrderResponse = mbInventoryRepository.findInventoryOrder(6L, 13L);
+        System.out.println(inventoryOrderResponse);
+    }
+
+    @Test
+    void 본사_특정_직영점_특정_재고_상세_조회_사용이력(){
+       List <InventoryUsageListResponse> inventoryUsageListResponse = mbInventoryRepository.findInventoryUsageList(6L, 13L);
+        System.out.println(inventoryUsageListResponse);
+
+    }
+
+
+
+
+}

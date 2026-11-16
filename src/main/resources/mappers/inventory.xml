@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.swdl.foodingredientmanagement.repository.MBInventoryRepository">
+
+    <select id="findInventoryList" resultType="kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryListResponse">
+        SELECT
+            s.store_name AS storeName,
+            i.ingredient_name AS ingredientName,
+            i.storage_type AS storageType,
+            od.current_quantity AS currentQuantity,
+            i.order_unit AS orderUnit,
+            od.store_at AS storeAt,
+            iu.management_start_at AS managementStartAt,
+            u.user_name AS userName
+        FROM order_details od
+                 JOIN orders o                 ON od.order_id = o.order_id
+                 JOIN stores s                 ON o.store_id = s.store_id
+                 JOIN ingredients i            ON od.ingredient_id = i.ingredient_id
+                 LEFT JOIN inventory_usages iu ON iu.order_detail_id = od.order_detail_id
+                 LEFT JOIN users u             ON o.user_id = u.user_id
+        WHERE od.current_quantity > 0
+        <if test="ingredientId != null">
+            AND i.ingredient_id = #{ingredientId}
+        </if>
+        <if test="storeId != null">
+            AND  s.store_id = #{storeId}
+        </if>
+        <if test="storeStartDate != null">
+            AND od.store_at &gt;= #{storeStartDate}
+        </if>
+        <if test="storeEndDate != null">
+            AND od.store_at &lt; DATE_ADD(#{storeEndDate}, INTERVAL 1 DAY)
+        </if>
+        <if test="manageStartDate != null">
+            AND iu.management_start_at &gt;= #{manageStartDate}
+        </if>
+        <if test="manageEndDate != null">
+            AND iu.management_start_at &lt; DATE_ADD(#{manageEndDate}, INTERVAL 1 DAY)
+        </if>
+        ORDER BY s.store_name, i.ingredient_name, od.store_at, iu.management_start_at
+    </select>
+
+    <select id="findInventoryCurrentQuantity" resultType="kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryListResponse">
+        SELECT
+            s.store_name      AS storeName,
+            i.ingredient_name AS ingredientName,
+            COALESCE((
+                         SELECT SUM(od.current_quantity)
+                         FROM order_details od
+                                  JOIN orders o ON od.order_id = o.order_id
+                         WHERE o.store_id        = s.store_id
+                           AND od.ingredient_id  = i.ingredient_id
+                           AND od.order_status   = '승인'
+                           AND od.store_at IS NOT NULL
+                     ), 0)             AS currentQuantity,
+            i.order_unit      AS orderUnit
+        FROM stores s, ingredients i
+        WHERE s.store_id      = #{storeId}
+          AND i.ingredient_id = #{ingredientId};
+    </select>
+
+    <select id="findInventoryIngredient" resultType="kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryIngredientResponse">
+        SELECT
+            s.store_name                AS storeName,
+            i.ingredient_name           AS ingredientName,
+            i.order_unit                AS orderUnit,
+            i.capacity                  AS capacity,
+            i.capacity_unit             AS capacityUnit,
+            i.storage_type              AS storageType,
+            i.management_method         AS managementMethod,
+            i.expiration_period         AS expirationPeriod,
+            i.consumption_period        AS consumptionPeriod,
+            i.summer_consumption_period AS summerConsumptionPeriod
+        FROM stores s
+                 JOIN users u       ON s.user_id = u.user_id
+                 JOIN ingredients i ON i.ingredient_id = #{ingredientId}
+        WHERE s.store_id = #{storeId};
+    </select>
+
+
+
+
+
+        <select id="findInventoryOrder"
+                resultType="kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryOrderResponse">
+            SELECT
+                od.manufacture_at                                          AS manufactureAt,
+                DATE_ADD(od.manufacture_at, INTERVAL i.expiration_period DAY) AS expirationDate,
+                od.store_at                                                AS storeAt,
+                od.order_quantity                                          AS orderQuantity,
+                i.order_unit                                               AS orderUnit
+            FROM order_details od
+                     JOIN orders o      ON od.order_id      = o.order_id
+                     JOIN ingredients i ON od.ingredient_id = i.ingredient_id
+            WHERE o.store_id       = #{storeId}
+              AND od.ingredient_id = #{ingredientId}
+              AND od.order_status  = '승인'
+              AND od.store_at IS NOT NULL
+
+        </select>
+
+
+
+
+
+
+
+</mapper>
