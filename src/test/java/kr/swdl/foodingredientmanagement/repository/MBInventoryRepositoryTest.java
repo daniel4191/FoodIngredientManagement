@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest
-public class MBInventoryTest {
+public class MBInventoryRepositoryTest {
 
     @Autowired
     MBInventoryRepository mbInventoryRepository;
