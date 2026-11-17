@@ -17,6 +17,10 @@ public class InventoryUsageListResponse {
     private int usageQuantity;
     private String orderUnit;
 
+    private Timestamp expirationAt;
+    private Timestamp manufactureAt;
+    private Timestamp storeAt;
+    private int orderQuantity;
 
 
 

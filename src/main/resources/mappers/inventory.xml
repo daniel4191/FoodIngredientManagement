@@ -102,17 +102,21 @@
             resultType="kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryUsageListResponse">
 
         SELECT
-        iu.consumption_at                            AS consumptionAt,
-        iu.management_start_at                       AS managementStartAt,
-        iu.usage_quantity  AS usageQuantity,
-        i.order_unit AS orderUnit
+            iu.consumption_at              AS consumptionAt,
+            iu.management_start_at    AS managementStartAt,
+            DATE(DATE_ADD(od.manufacture_at, INTERVAL i.expiration_period DAY))  AS expirationAt,
+            od.manufacture_at AS manufacture_at,
+            od.store_at AS storeAt,
+            od.order_quantity AS orderQuantity,
+            i.order_unit AS orderUnit,
+            iu.usage_quantity             AS usageQuantity
         FROM inventory_usages iu
-        JOIN order_details od ON iu.order_detail_id = od.order_detail_id
-        JOIN orders o         ON od.order_id        = o.order_id
-        JOIN ingredients i    ON od.ingredient_id   = i.ingredient_id
+                 JOIN order_details od ON iu.order_detail_id = od.order_detail_id
+                 JOIN orders o         ON od.order_id        = o.order_id
+                 JOIN ingredients i    ON od.ingredient_id   = i.ingredient_id
         WHERE o.store_id       = #{storeId}
-        AND od.ingredient_id = #{ingredientId}
-        ORDER BY iu.management_start_at DESC
+          AND od.ingredient_id = #{ingredientId}
+        ORDER BY iu.management_start_at DESC;
 
     </select>
 
@@ -142,6 +146,14 @@
         </if>
         ORDER BY i.sub_category_name, i.ingredient_name, od.store_at
     </select>
+
+
+
+
+
+
+
+
 
 
 </mapper>
