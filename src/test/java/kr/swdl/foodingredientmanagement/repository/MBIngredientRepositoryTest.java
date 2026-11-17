@@ -120,12 +120,6 @@ public class MBIngredientRepositoryTest {
     }
 
 
-
-
-
-
-
-
     @Test
     @Transactional
     void 식재료_등록() {
@@ -155,7 +149,65 @@ public class MBIngredientRepositoryTest {
         assertThat(saved).isNotNull();
         assertThat(saved.getIngredientName()).isEqualTo("양상추");
         assertThat(saved.getUsableFlag()).isEqualTo("Y");
-
-
     }
+
+    @Test
+    @Transactional
+    void 식재료_수정() {
+        IngredientInsertDTO ingredientInsertDTO = IngredientInsertDTO.builder()
+                .ingredientId(1L)
+                .ingredientName("로메인")
+                .supplyPrice(18000)
+                .build();
+
+        int result = mbIngredientRepository.updateIngredientDetail(ingredientInsertDTO);
+        assertThat(result).isEqualTo(1);
+
+        IngredientDetailDTO updated = mbIngredientRepository.findIngredientDetail(1L);
+        assertThat(updated.getIngredientName()).isEqualTo("로메인");
+        assertThat(updated.getSupplyPrice()).isEqualTo(18000);
+    }
+
+
+
+    @Test
+    @Transactional
+    void 식재료_삭제() {
+        IngredientInsertDTO ingredientInsertDTO = IngredientInsertDTO.builder()
+                .ingredientId(1L)
+                .ingredientName("로메")
+                .supplyPrice(18000)
+                .build();
+
+        int result = mbIngredientRepository.updateIngredientDetail(ingredientInsertDTO);
+        assertThat(result).isEqualTo(1);
+
+        IngredientDetailDTO updated = mbIngredientRepository.findIngredientDetail(1L);
+        assertThat(updated.getIngredientName()).isEqualTo("로메");
+        assertThat(updated.getSupplyPrice()).isEqualTo(18000);
+    }
+
+
+    @Test
+    @Transactional
+    void 식재료_단일_삭제() {
+        int result = mbIngredientRepository.deleteIngredientDetail(List.of(1L));
+
+        assertThat(result).isEqualTo(1);
+        assertThat(mbIngredientRepository.findIngredientDetail(1L)).isNull();
+    }
+
+    @Test
+    @Transactional
+    void 식재료_다중_삭제() {
+        List<Long> ids = List.of(1L, 2L, 3L);
+
+        int result = mbIngredientRepository.deleteIngredientDetail(ids);
+
+        assertThat(result).isEqualTo(3);
+        for (Long id : ids) {
+            assertThat(mbIngredientRepository.findIngredientDetail(id)).isNull();
+        }
+    }
+
 }
