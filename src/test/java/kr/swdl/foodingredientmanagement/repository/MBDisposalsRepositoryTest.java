@@ -124,13 +124,14 @@ public class MBDisposalsRepositoryTest {
                 .storeName(null)
                 .ingredientName(null)
                 .disposalStatus(null)
-                .startDate("2026-11-09")
-                .endDate("2026-11-1")
+                .startDate("2026-10-08")
+                .endDate("2026-11-17")
                 .disposalType(null)
                 .processingMethod(null)
                 .userId(2L)
                 .sortType(null).build();
         List<HQDisposalDTO> disposals = mbDisposalsRepository.getHqDisposals(filterDTO);
+        log.info("{}", disposals.size());
         Assertions.assertTrue(disposals.size() >= 0);
     }
 
