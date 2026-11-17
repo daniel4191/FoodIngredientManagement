@@ -1,8 +1,6 @@
 package kr.swdl.foodingredientmanagement.order.service;
 
-import kr.swdl.foodingredientmanagement.dto.OrderDetailRequestDTO;
-import kr.swdl.foodingredientmanagement.dto.OrderListDTO;
-import kr.swdl.foodingredientmanagement.dto.OrderProgressDTO;
+import kr.swdl.foodingredientmanagement.dto.*;
 import kr.swdl.foodingredientmanagement.repository.JPAOrderRepository;
 import kr.swdl.foodingredientmanagement.repository.MBOrderRepository;
 import kr.swdl.foodingredientmanagement.repository.entitiy.Orders;
@@ -23,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Slf4j
-@Transactional
 public class OrderServiceTest {
 
     @Autowired
@@ -136,6 +133,31 @@ public class OrderServiceTest {
     }
 
     // 3. 본사 승인
+    @Test
+    void 본사_발주_승인(){
+        int result = orderService.approveOrder(35L);
+        log.info("본사 발주 승인 : {}",result);
+    }
     // 4, 본사 거절
-    // 5. 입고 처리
+    @Test
+    void 본사_발주_거절(){
+        int result = orderService.rejectOrder(35L,"곰팡이");
+        log.info("본사 거절 승인 : {}",result);
+    }
+    // 5. 입고 처리(입고, 제조일자 변경)
+    @Test
+    void 직영점_입고_처리(){
+        int result = orderService.updateOrderDate(35L,"2026-11-17","2026-11-19");
+        log.info("직영점 입고 처리 {}",result);
+    }
+
+    @Test
+    void 전체_상태_조회(){
+        OrderStatusCountDTO result = orderService.countOrderStatus();
+        log.info("승인 전체 상태 조회 : {}",result.getApprovedCount());
+        log.info("거절 전체 상태 조회 : {}",result.getRejectedCount());
+        log.info("대기 전체 상태 조회 : {}",result.getWaitingCount());
+    }
+
+    
 }

@@ -307,4 +307,5 @@
         store_at = #{storeAt}
         WHERE order_detail_id = #{orderDetailId}
     </update>
+
 </mapper>

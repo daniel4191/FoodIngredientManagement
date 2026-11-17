@@ -48,7 +48,8 @@ public interface MBOrderRepository {
 
     List<OrderProgressDTO> findOrderProgress(@Param("storeId") Long storeId);
 
-    int approveOrderDetail(Long orderDetailId);
+    int approveOrderDetail(
+            @Param("orderDetailId") Long orderDetailId);
 
     int rejectOrderDetail(
             @Param("orderDetailId") Long orderDetailId,

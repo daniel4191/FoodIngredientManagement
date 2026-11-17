@@ -2,6 +2,8 @@ package kr.swdl.foodingredientmanagement.service;
 
 import jakarta.transaction.Transactional;
 import kr.swdl.foodingredientmanagement.dto.OrderDetailRequestDTO;
+import kr.swdl.foodingredientmanagement.dto.OrderStatusCountDTO;
+import kr.swdl.foodingredientmanagement.dto.OrderStatusDTO;
 import kr.swdl.foodingredientmanagement.repository.JPAOrderRepository;
 import kr.swdl.foodingredientmanagement.repository.MBOrderRepository;
 import kr.swdl.foodingredientmanagement.repository.entitiy.Orders;
@@ -14,17 +16,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class OrderService {
-    private final JPAOrderRepository ordersRepository;
+    private final JPAOrderRepository jpaOrderRepository;
     private final MBOrderRepository mbOrderRepository;
 
-    // 등록 서비스 테스트 구현중
-    @Transactional
-    public Long registerOrder(
-            Orders order,
-            List<OrderDetailRequestDTO> detailList) {
-
-        Orders savedOrder = ordersRepository.save(order);
+    public Long registerOrder(Orders order, List<OrderDetailRequestDTO> detailList) {
+        Orders savedOrder = jpaOrderRepository.save(order);
 
         Long orderId = savedOrder.getOrderId();
 
@@ -45,6 +43,25 @@ public class OrderService {
             throw new IllegalStateException("총금액 갱신 실패");
         }
 
-        return orderId;
+        return orderId; //생성 후
+    }
+
+    public int approveOrder(Long orderDetailId) {
+        int result = mbOrderRepository.approveOrderDetail(orderDetailId);
+        return result;
+    }
+
+    public int rejectOrder(Long orderDetailId, String rejectReaseon){
+        int result = mbOrderRepository.rejectOrderDetail(orderDetailId, rejectReaseon) ;
+        return result;
+    }
+
+    public int updateOrderDate(Long orderDetailId, String manufactureAt, String storeAt) {
+        int result = mbOrderRepository.updateOrderDetailsDates(orderDetailId, manufactureAt, storeAt);
+        return result;
+    }
+
+    public OrderStatusCountDTO countOrderStatus(){
+        return mbOrderRepository.countOrderStatus();
     }
 }
