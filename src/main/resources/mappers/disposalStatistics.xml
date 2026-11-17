@@ -67,7 +67,7 @@
             AND o.order_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
         </if>
         GROUP BY s.store_id, i.ingredient_id
-        ORDER BY s.store_id, disposal_rate_pct DESC
+        ORDER BY s.store_id, disposalRatePct DESC
     </select>
 
 
