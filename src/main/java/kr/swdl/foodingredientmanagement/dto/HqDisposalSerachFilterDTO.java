@@ -3,7 +3,7 @@ package kr.swdl.foodingredientmanagement.dto;
 import lombok.Builder;
 
 @Builder
-public class DisposalSerachFilterDTO {
+public class HqDisposalSerachFilterDTO {
     private String storeName;
     private String ingredientName;
     private String disposalStatus;

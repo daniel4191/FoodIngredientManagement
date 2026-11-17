@@ -3,8 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.swdl.foodingredientmanagement.repository.MBDisposalsRepository">
-    <select id="getDisposals" parameterType="kr.swdl.foodingredientmanagement.dto.DisposalSerachFilterDTO" resultType="kr.swdl.foodingredientmanagement.dto.DisposalListDTO">
-
+    <select id="getHqDisposals" parameterType="kr.swdl.foodingredientmanagement.dto.HqDisposalSerachFilterDTO" resultType="kr.swdl.foodingredientmanagement.dto.HQDisposalDTO">
         SELECT
         d.disposal_req_at AS disposalReqAt,
         s.store_name AS storeName,
@@ -27,6 +26,9 @@
                  LEFT OUTER JOIN disposal_app_infos dai
                                  ON dai.disposal_id = d.disposal_id
         <where>
+            <if test="userId != null">
+                AND s.user_id = #{userId}
+            </if>
             <if test="storeName != null and storeName != ''">
                 AND s.store_name LIKE CONCAT('%', #{storeName}, '%')
             </if>
@@ -92,6 +94,30 @@
             (dai.check_at IS NULL OR -- 폐기 확인이 안된 경우
              dai.check_user_id IS NULL        OR -- 폐기 확인이 안된 경우
              dai.disposal_img IS NULL); -- 폐기 확인이 안된 경우
+    </select>
+
+    <select id="getStoreDisposals" parameterType="kr.swdl.foodingredientmanagement.dto.HqDisposalSerachFilterDTO" resultType="kr.swdl.foodingredientmanagement.dto.StoreDisposalDTO">
+        SELECT
+            d.disposal_req_at AS disposalReqAt,
+            i.ingredient_name AS ingredientName,
+            d.disposal_quantity AS disposalQuantity,
+            d.disposal_price AS disposalPrice,
+            d.disposal_type AS disposalType,
+            d.processing_method AS processingMethod,
+            d.disposal_status AS disposalStatus,
+            dai.check_at AS checkAt
+        FROM disposals d
+                 LEFT OUTER JOIN order_details AS od
+                                 ON d.order_detail_id = od.order_detail_id
+                 LEFT OUTER JOIN ingredients i
+                                 ON od.ingredient_id = i.ingredient_id
+                 LEFT OUTER JOIN orders AS o
+                                 ON od.order_id = o.order_id  -- [수정 완료] o.order_id로 변경
+                 LEFT OUTER JOIN stores s
+                                 ON o.store_id = s.store_id
+                 LEFT OUTER JOIN disposal_app_infos dai
+                                 ON dai.disposal_id = d.disposal_id
+        WHERE s.store_id = #{storeId}
     </select>
 
 </mapper>

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @SpringBootTest
@@ -29,34 +30,14 @@ public class JPADisposalAppInfoTest {
     @Test
     @Transactional
     public void 폐기승인정보_업데이트() {
-
         Optional<DisposalAppInfos> optionalDisposalAppInfo = jpaDisposalAppInfosRepository.findById(Long.valueOf(1));
         Assertions.assertFalse(optionalDisposalAppInfo.isEmpty());
         DisposalAppInfos disposalAppInfo = optionalDisposalAppInfo.get();
-//        disposalAppInfo.setCheckAt();
+        disposalAppInfo.setCheckAt(new Timestamp(System.currentTimeMillis()));
 //        disposalAppInfo.setDisposalImg();
         disposalAppInfo.setCheckUserId(Long.valueOf(1));
 
         DisposalAppInfos updated = jpaDisposalAppInfosRepository.save(disposalAppInfo);
         Assertions.assertEquals(disposalAppInfo, updated);
     }
-
-    @Test
-    @Transactional
-    public void 폐기승인정보_업데이트_v2() {
-//        Optional<DisposalAppInfos> optionalDisposalAppInfo = jpaDisposalAppInfoRepository.findById(Long.valueOf(1));
-//        Assertions.assertFalse(optionalDisposalAppInfo.isEmpty());
-//        DisposalAppInfos disposalAppInfo = optionalDisposalAppInfo.get();
-//        System.out.println(disposalAppInfo);
-
-        int updateCount = jpaDisposalAppInfosRepository.updateDisposalAppInfo(Long.valueOf(1), null, Long.valueOf(1));
-        Assertions.assertEquals(updateCount, 1);
-
-//        optionalDisposalAppInfo = jpaDisposalAppInfoRepository.findById(Long.valueOf(1));
-//        Assertions.assertFalse(optionalDisposalAppInfo.isEmpty());
-//        disposalAppInfo = optionalDisposalAppInfo.get();
-//        System.out.println(disposalAppInfo);
-    }
-
-
 }

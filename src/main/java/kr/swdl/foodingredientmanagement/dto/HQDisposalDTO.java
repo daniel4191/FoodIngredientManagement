@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 @Builder
 @ToString
-public class DisposalListDTO {
+public class HQDisposalDTO {
     private Timestamp disposalReqAt;
     private String storeName;
     private String ingredientName;
@@ -17,4 +17,5 @@ public class DisposalListDTO {
     private String processingMethod;
     private String disposalStatus;
     private Timestamp checkAt;
+    private Long userId;
 }

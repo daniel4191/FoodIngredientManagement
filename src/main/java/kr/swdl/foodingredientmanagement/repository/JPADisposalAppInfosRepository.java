@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface JPADisposalAppInfosRepository extends JpaRepository<DisposalAppInfos, Long> {
 
@@ -22,4 +24,6 @@ public interface JPADisposalAppInfosRepository extends JpaRepository<DisposalApp
             @Param("disposalAppInfoId") Long disposalAppInfoId,
             @Param("disposalImg") byte[] disposalImg,
             @Param("checkUserId") Long checkUserId);
+
+    Optional<DisposalAppInfos> findByDisposalId(Long disposalId);
 }

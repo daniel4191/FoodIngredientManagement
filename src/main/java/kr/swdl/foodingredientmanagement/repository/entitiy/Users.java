@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-public class User {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +23,5 @@ public class User {
     private String password;
     private String userName;
     private String role; // HQ_USER, HQ_ADMIN, STORE_STAFF
+    private Long storeId;
 }

@@ -18,18 +18,15 @@ public class JPADisposalsRepositoryTest {
 
     @Test
     @Transactional
-    public void 본사_폐기_등록() {
+    public void 본사_폐기_등록_성공() {
         Disposals disposal = Disposals.builder()
-//                .disposalId(//)
                 .disposalUnit("통폐기")
-                .disposalReqAt(Timestamp.valueOf("2026-11-09 10:00:00"))
+                .disposalReqAt(new Timestamp(System.currentTimeMillis()))
                 .reqUserId(Long.valueOf(1))
                 .disposalStatus("승인")
                 .processingMethod("정기폐기")
                 .disposalType("식재료 규칙")
                 .disposalReason("유통기한 경과")
-                .disposalDetailReason(null)
-                .rejectReason(null)
                 .disposalQuantity(1)
                 .disposalPrice(7980)
                 .orderDetailId(Long.valueOf(1))
@@ -38,13 +35,36 @@ public class JPADisposalsRepositoryTest {
         Assertions.assertNotNull(jpaDisposalsRepository.save(disposal));
     }
 
+    // 누락데이터
+    @Test
+    @Transactional
+    public void 본사_폐기_등록_실패() {
+        Disposals disposal = Disposals.builder()
+                .disposalReqAt(new Timestamp(System.currentTimeMillis()))
+                .reqUserId(Long.valueOf(1))
+                .disposalStatus("승인")
+                .processingMethod("정기폐기")
+                .disposalType("식재료 규칙")
+                .disposalReason("유통기한 경과")
+                .disposalQuantity(1)
+                .disposalPrice(7980)
+                .orderDetailId(Long.valueOf(1))
+                .build();
+
+        Exception exception = Assertions.assertThrows(Exception.class, () -> {
+            jpaDisposalsRepository.save(disposal);
+        });
+
+        System.out.println("Exception Class : " +  exception.getClass().getName());
+
+    }
+
     @Test
     @Transactional
     public void 직영점_폐기_등록() {
         Disposals disposal = Disposals.builder()
-//                .disposalId(//)
                 .disposalUnit("통폐기")
-                .disposalReqAt(Timestamp.valueOf("2026-11-09 10:00:00"))
+                .disposalReqAt(new Timestamp(System.currentTimeMillis()))
                 .reqUserId(Long.valueOf(1))
                 .disposalStatus("요청")
                 .processingMethod("정기폐기")

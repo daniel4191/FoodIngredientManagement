@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.swdl.foodingredientmanagement.repository.MBDisposalStatisticsRepository">
+    <!-- 1. 전체 직영점의 전체 발주 대비 폐기율 (누적)-->
+    <select id="getOrderDisposalRateUntilNow" resultType="double">
+        SELECT COUNT(d.disposal_id) * 100.0
+                   / NULLIF(COUNT(od.order_detail_id), 0) AS disposal_rate_pct
+               -- COUNT(od.order_detail_id)                  AS total_order_count,
+               -- COUNT(d.disposal_id)                       AS total_disposal_count
+        FROM order_details od
+                 JOIN orders o ON od.order_id = o.order_id
+                 LEFT JOIN disposals d ON od.order_detail_id = d.order_detail_id
+        WHERE od.order_status IN ('승인', '완료')
+        <if test="startDate != null and endDate != null">
+            AND o.order_at >= #{startDate}
+            AND o.order_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+        </if>
+    </select>
+
+    <!-- 2. 직영점별 발주 대비 폐기율 -->
+    <select id="getOrderDisposalRatesByStore" resultType="kr.swdl.foodingredientmanagement.repository.vo.StoreOrderDisposalRateVO">
+        SELECT s.store_id AS storeId,
+               s.store_name AS storeName,
+               COUNT(od.order_detail_id)                  AS totalOrderCount,
+               COUNT(d.disposal_id)                       AS totalDisposalCount,
+               COUNT(d.disposal_id) * 100.0
+                   / NULLIF(COUNT(od.order_detail_id), 0) AS disposalRatePct
+        FROM stores s
+                 JOIN orders o ON s.store_id = o.store_id
+                 JOIN order_details od ON o.order_id = od.order_id
+                 LEFT JOIN disposals d ON od.order_detail_id = d.order_detail_id
+        WHERE od.order_status IN ('승인', '완료')
+        <if test="startDate != null and endDate != null">
+            AND o.order_at >= #{startDate}
+            AND o.order_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+        </if>
+        GROUP BY s.store_id
+        ORDER BY disposalRatePct DESC
+    </select>
+
+    <!-- 3. 특정 직영점 식재료별 발주 대비 폐기율 -->
+    <select id="getStoreIngredientDisposalRates" resultType="kr.swdl.foodingredientmanagement.repository.vo.IngredientDisposalRateToOrderByStoreVO">
+        SELECT s.store_id AS storeId,
+               s.store_name AS storeName,
+               i.ingredient_id AS ingredientId,
+               i.ingredient_name AS ingredientName,
+               COUNT(od.order_detail_id)                  AS totalOrderCount,
+               COUNT(d.disposal_id)                       AS totalDisposalCount,
+               COUNT(d.disposal_id) * 100.0
+                   / NULLIF(COUNT(od.order_detail_id), 0) AS disposalRatePct
+        FROM stores s
+                 JOIN orders o ON s.store_id = o.store_id
+                 JOIN order_details od ON o.order_id = od.order_id
+                 JOIN ingredients i ON od.ingredient_id = i.ingredient_id
+                 LEFT JOIN disposals d ON od.order_detail_id = d.order_detail_id
+        WHERE od.order_status IN ('승인', '완료')
+        AND s.store_id = #{storeId}
+        <if test="startDate != null and endDate != null">
+            AND o.order_at >= #{startDate}
+            AND o.order_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+        </if>
+        GROUP BY s.store_id, i.ingredient_id
+        ORDER BY s.store_id, disposal_rate_pct DESC
+    </select>
+
+    <!-- 4. 전체 직영점의 식재료별 폐기 비용 -->
+    <select id="getDisposalCostsByIngredient" resultType="kr.swdl.foodingredientmanagement.repository.vo.DisposalCostByIngredientVO">
+        SELECT i.ingredient_id AS ingredientId,
+               i.ingredient_name AS ingredientName,
+               SUM(d.disposal_price)    AS totalDisposalPrice,
+               SUM(d.disposal_quantity) AS totalDisposalQuantity
+        FROM order_details od
+                 JOIN ingredients i ON od.ingredient_id = i.ingredient_id
+                 JOIN disposals d ON od.order_detail_id = d.order_detail_id
+        WHERE od.order_status IN ('승인', '완료')
+          AND i.usable_flag != 'false'
+        <if test="startDate != null and endDate != null">
+            AND d.disposal_app_at >= #{startDate}
+            AND d.disposal_app_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+        </if>
+        GROUP BY i.ingredient_id, i.ingredient_name
+        ORDER BY totalDisposalPrice DESC
+    </select>
+
+    <!-- 5. 특정 직영점의 식재료별 폐기 비용 -->
+    <select id="getDisposalCostsByIngredientForStore" resultType="kr.swdl.foodingredientmanagement.repository.vo.DisposalCostByIngredientVO">
+        SELECT i.ingredient_id AS ingredientId,
+               i.ingredient_name AS ingredientName,
+               SUM(d.disposal_price)    AS totalDisposalPrice,
+               SUM(d.disposal_quantity) AS totalDisposalQuantity
+        FROM stores s
+                 JOIN orders o ON s.store_id = o.store_id
+                 JOIN order_details od ON o.order_id = od.order_id
+                 JOIN ingredients i ON od.ingredient_id = i.ingredient_id
+                 JOIN disposals d ON od.order_detail_id = d.order_detail_id
+        WHERE od.order_status IN ('승인', '완료')
+          AND s.store_id = #{storeId}
+        <if test="startDate != null and endDate != null">
+            AND d.disposal_app_at >= #{startDate}
+            AND d.disposal_app_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+        </if>
+        GROUP BY s.store_id, i.ingredient_id, i.ingredient_name
+        ORDER BY totalDisposalPrice DESC
+    </select>
+
+    <!-- 6. 직영점별 폐기 비용 순위 -->
+    <select id="getStoreDisposalCostRanking" resultType="kr.swdl.foodingredientmanagement.repository.vo.DisposalCostRankingStoreInfoVO">
+        SELECT s.store_id AS storeId,
+               s.store_name AS storeName,
+               SUM(COALESCE(d.disposal_price, 0))    AS totalDisposalPrice,
+               SUM(COALESCE(d.disposal_quantity, 0)) AS totalDisposalQuantity
+        FROM stores s
+                 JOIN orders o ON s.store_id = o.store_id
+                 JOIN order_details od ON o.order_id = od.order_id
+                 LEFT JOIN disposals d ON od.order_detail_id = d.order_detail_id
+        WHERE od.order_status IN ('승인', '완료')
+        <if test="startDate != null and endDate != null">
+            AND d.disposal_app_at >= #{startDate}
+            AND d.disposal_app_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+        </if>
+        GROUP BY s.store_id
+        ORDER BY totalDisposalPrice DESC
+    </select>
+
+    <!-- 7. 최근 7일간 일자별 폐기 비용 및 수량 -->
+    <select id="getDailyDisposalTotalsForPeriod" resultType="kr.swdl.foodingredientmanagement.repository.vo.DailyDisposalTotalVO">
+        SELECT DATE(d.disposal_app_at)  AS disposalDate,
+               COUNT(d.disposal_id)     AS disposalCount,
+               SUM(d.disposal_quantity) AS totalDisposalQuantity,
+               SUM(d.disposal_price)    AS totalDisposalPrice
+        FROM disposals d
+        WHERE d.disposal_status IN ('승인', '완료')
+          AND d.disposal_app_at >= NOW() - INTERVAL 7 DAY
+        <if test="startDate != null and endDate != null">
+            AND d.disposal_app_at >= #{startDate}
+            AND d.disposal_app_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+        </if>
+        GROUP BY DATE(d.disposal_app_at)
+        ORDER BY disposalDate DESC
+    </select>
+</mapper>

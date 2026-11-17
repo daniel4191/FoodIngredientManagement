@@ -1,14 +1,17 @@
 package kr.swdl.foodingredientmanagement.repository;
 
-import kr.swdl.foodingredientmanagement.dto.DisposalListDTO;
-import kr.swdl.foodingredientmanagement.dto.DisposalSerachFilterDTO;
+import kr.swdl.foodingredientmanagement.dto.HQDisposalDTO;
+import kr.swdl.foodingredientmanagement.dto.HqDisposalSerachFilterDTO;
+import kr.swdl.foodingredientmanagement.dto.StoreDisposalDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface MBDisposalsRepository {
-    public List<DisposalListDTO> getDisposals(DisposalSerachFilterDTO disposalSerachFilterDTO);
+    public List<HQDisposalDTO> getHqDisposals(HqDisposalSerachFilterDTO hqDisposalSerachFilterDTO);
+
+    public List<StoreDisposalDTO> getStoreDisposals(HqDisposalSerachFilterDTO hqDisposalSerachFilterDTO);
 
     public int countByTodayDisposed();
 
