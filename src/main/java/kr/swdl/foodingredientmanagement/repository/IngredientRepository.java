@@ -9,15 +9,15 @@ import java.util.Map;
 @Mapper
 public interface IngredientRepository {
     // 1. 식재료 목록 전체 조회
-    List<Map<String,Object>> findIngredientList();
+    List<Map<String,Object>> getIngredientList();
 
     // 2. 식재료 목록 소분류별 조회
-    List<Map<String, Object>> findSubCategoryList(
+    List<Map<String, Object>> getSubCategoryList(
             @Param("subCategoryName") String subCategoryName
     );
 
     // 3. 식재료 목록 보관유형별 조회
-    List<Map<String,Object>> findStorageTypeList(
+    List<Map<String,Object>> getStorageTypeList(
         @Param("storageType") String storageType
     );
 
@@ -27,17 +27,17 @@ public interface IngredientRepository {
     );
 
     // 5. 식재료 정보 등록
-    boolean insertIngredient(
+    boolean addIngredient(
             Map<String, Object> ingredient
     );
 
     // 6. 식재료 상세 정보
-    Map<String, Object> ingredientDetail(
+    Map<String, Object> getIngredientDetail(
             @Param("ingredientId") Long ingredientId
     );
 
     // 7. 식재료 상세 수정
-    boolean ingredientUpdate(
+    boolean updateIngredient(
             Map<String, Object> ingredient
     );
 }

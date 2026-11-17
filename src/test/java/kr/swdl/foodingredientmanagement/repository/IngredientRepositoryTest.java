@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,10 +21,10 @@ public class IngredientRepositoryTest {
 
     // 1. 식재료 목록 전체 조회
     @Test
-    void findIngredientList(){
+    void getIngredientList(){
         // 1) 메서드 호출
         List<Map<String,Object>> result =
-                ingredientRepository.findIngredientList();
+                ingredientRepository.getIngredientList();
 
         // 2) 결과 검증
         assertThat(result).isNotNull();
@@ -40,13 +39,13 @@ public class IngredientRepositoryTest {
 
         // 1) 메서드 호출
         List<Map<String, Object>> result1 =
-                ingredientRepository.findSubCategoryList("채소류");
+                ingredientRepository.getSubCategoryList("채소류");
 
         List<Map<String, Object>> result2 =
-                ingredientRepository.findSubCategoryList("빵류");
+                ingredientRepository.getSubCategoryList("빵류");
 
         List<Map<String, Object>> result3 =
-                ingredientRepository.findSubCategoryList("유지류");
+                ingredientRepository.getSubCategoryList("유지류");
 
         // 2) 결과 검증
         assertThat(result1).isNotNull();
@@ -61,13 +60,13 @@ public class IngredientRepositoryTest {
 
     // 3. 식재료 목록 보관유형별 조회
     @Test
-    void findStorageTypeList(){
+    void getStorageTypeList(){
         // 1) 메서드 호출
         List<Map<String,Object>> result1 =
-                ingredientRepository.findStorageTypeList("냉장");
+                ingredientRepository.getStorageTypeList("냉장");
 
         List<Map<String,Object>> result2 =
-                ingredientRepository.findStorageTypeList("냉동");
+                ingredientRepository.getStorageTypeList("냉동");
 
         // 2) 결과 검증
         assertThat(result1).isNotNull();
@@ -103,7 +102,7 @@ public class IngredientRepositoryTest {
     }
 
     // 5-1. 식재료 등록를 위한 데이터
-    private Map<String, Object> createTestIngredient(){
+    private Map<String, Object> addTestIngredient(){
 
         Map<String, Object> ingredient = new HashMap<>();
 
@@ -126,12 +125,12 @@ public class IngredientRepositoryTest {
 
     // 5-2. 식재료 정보 등록
     @Test
-    void insertIngredient(){
+    void addIngredient(){
         // 1) 등록 데이터
-        Map<String, Object> ingredient = createTestIngredient();
+        Map<String, Object> ingredient = addTestIngredient();
 
         // 2) 메서드 호출
-        boolean result = ingredientRepository.insertIngredient(ingredient);
+        boolean result = ingredientRepository.addIngredient(ingredient);
 
         // 3) 결과 검증
         assertThat(result).isTrue();
@@ -142,8 +141,8 @@ public class IngredientRepositoryTest {
 
     // 6. 식재료 상세 정보
     @Test
-    void ingredientDetail(){
-        Map<String, Object> result = ingredientRepository.ingredientDetail(1L);
+    void getIngredientDetail(){
+        Map<String, Object> result = ingredientRepository.getIngredientDetail(1L);
 
         // 2) 결과 검증
         assertThat(result).isNotNull();
@@ -154,15 +153,15 @@ public class IngredientRepositoryTest {
 
     // 7. 식재료 상세 수정
     @Test
-    void ingredientUpdate(){
+    void updateIngredient(){
 
         // 1) 데이터 준비
-        Map<String, Object> ingredientSamle = createTestIngredient();
+        Map<String, Object> ingredientSamle = addTestIngredient();
         ingredientSamle.put("ingredient_id", -1L);
         ingredientSamle.put("supply_price", 3500);
 
         // 2) 메서드 호출
-        boolean result = ingredientRepository.ingredientUpdate(ingredientSamle);
+        boolean result = ingredientRepository.updateIngredient(ingredientSamle);
 
         // 3) 결과 검증
         assertThat(result).isFalse();
