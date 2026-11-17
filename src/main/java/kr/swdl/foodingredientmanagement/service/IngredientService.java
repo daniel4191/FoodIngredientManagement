@@ -1,7 +1,6 @@
 package kr.swdl.foodingredientmanagement.service;
 
 import kr.swdl.foodingredientmanagement.repository.IngredientRepository;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +44,7 @@ public class IngredientService {
 
         // ids 에 대한 예외 처리
         if (ids == null || ids.isEmpty()){
-            throw new IllegalArgumentException("삭제할 식재료가 없습니다. -idx 없음")
+            throw new IllegalArgumentException("삭제할 식재료가 없습니다. -idx 없음");
         }
 
         boolean result = ingredientRepository.deleteIngredients(ids);
