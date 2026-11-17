@@ -57,10 +57,7 @@
     </delete>
 
 <!--    // 5. 식재료 정보 등록-->
-    <insert id="insertIngredient"
-            useGeneratedKeys="true"
-            keyProperty="ingredient_id"
-            keyColumn="ingredient_id">
+    <insert id="insertIngredient">
 
         INSERT INTO ingredients (
         ingredient_name,

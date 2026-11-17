@@ -6,13 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
-@SpringBootTest
+@SpringBootTest(properties = "spring.jpa.hibernate.ddl-auto=none")
 public class IngredientRepositoryTest {
 
     @Autowired
@@ -81,6 +83,7 @@ public class IngredientRepositoryTest {
     // 3) 결과 확인
 
     // 4. 식재료 선택 삭제 (단일, 다중)
+    @Test
     void deleteIngredients(){
 
         // 1) 메서드 호출
@@ -99,24 +102,72 @@ public class IngredientRepositoryTest {
         System.out.println("4. 식재료 선택 삭제 (단일, 다중) result2 = " + result2);
     }
 
-    // 5. 식재료 정보 등록
-    boolean insertIngredient(){
-        Map<String, Object> result;
+    // 5-1. 식재료 등록를 위한 데이터
+    private Map<String, Object> createTestIngredient(){
+
+        Map<String, Object> ingredient = new HashMap<>();
+
+        ingredient.put("ingredient_name", "TEST_크리스피");
+        ingredient.put("major_category_name", "비가공식품");
+        ingredient.put("sub_category_name", "채소류");
+        ingredient.put("capacity", 1);
+        ingredient.put("capacity_unit", "EA");
+        ingredient.put("order_unit", "봉");
+        ingredient.put("storage_type", "냉장");
+        ingredient.put("supply_price", 3000);
+        ingredient.put("expiration_period", 8);
+        ingredient.put("management_method", "손질");
+        ingredient.put("consumption_period", 3);
+        ingredient.put("summer_consumption_period", 2);
+        ingredient.put("supply_quantity", 10);
+
+        return ingredient;
+    }
+
+    // 5-2. 식재료 정보 등록
+    @Test
+    void insertIngredient(){
+        // 1) 등록 데이터
+        Map<String, Object> ingredient = createTestIngredient();
+
+        // 2) 메서드 호출
+        boolean result = ingredientRepository.insertIngredient(ingredient);
+
+        // 3) 결과 검증
+        assertThat(result).isTrue();
+
+        // 4) 결과 확인
+        System.out.println("5. 식재료 정보 등록 result = " + result);
+    }
+
+    // 6. 식재료 상세 정보
+    @Test
+    void ingredientDetail(){
+        Map<String, Object> result = ingredientRepository.ingredientDetail(1L);
 
         // 2) 결과 검증
         assertThat(result).isNotNull();
 
         // 3) 결과 확인
-        System.out.println("5. 식재료 정보 등록 result1 = " + result1);
+        System.out.println("6. 식재료 상세 정보 result = " + result);
     }
 
-    // 6. 식재료 상세 정보
-    Map<String, Object> ingredientDetail(
-            @Param("ingredientId") Long ingredientId
-    );
-
     // 7. 식재료 상세 수정
-    boolean ingredientUpdate(
-            Map<String, Object> ingredient
-    );
+    @Test
+    void ingredientUpdate(){
+
+        // 1) 데이터 준비
+        Map<String, Object> ingredientSamle = createTestIngredient();
+        ingredientSamle.put("ingredient_id", -1L);
+        ingredientSamle.put("supply_price", 3500);
+
+        // 2) 메서드 호출
+        boolean result = ingredientRepository.ingredientUpdate(ingredientSamle);
+
+        // 3) 결과 검증
+        assertThat(result).isFalse();
+
+        // 4) 결과 확인
+        System.out.println("7. 식재료 상세 수정 result = " + result);
+    }
 }
