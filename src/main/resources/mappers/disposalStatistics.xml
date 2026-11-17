@@ -11,11 +11,11 @@
                -- COUNT(d.disposal_id)                       AS total_disposal_count
         FROM order_details od
                  JOIN orders o ON od.order_id = o.order_id
-                 LEFT JOIN disposals d ON od.order_detail_id = d.order_detail_id
+                 LEFT JOIN disposals d ON od.order_detail_id = d.order_detail_id AND d.disposal_status IN ('승인', '완료')
         WHERE od.order_status IN ('승인', '완료')
         <if test="startDate != null and endDate != null">
-            AND o.order_at >= #{startDate}
-            AND o.order_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+            AND d.disposal_app_at >= #{startDate}
+            AND d.disposal_app_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
         </if>
     </select>
 
@@ -30,11 +30,11 @@
         FROM stores s
                  JOIN orders o ON s.store_id = o.store_id
                  JOIN order_details od ON o.order_id = od.order_id
-                 LEFT JOIN disposals d ON od.order_detail_id = d.order_detail_id
+                 LEFT JOIN disposals d ON od.order_detail_id = d.order_detail_id AND d.disposal_status IN ('승인', '완료')
         WHERE od.order_status IN ('승인', '완료')
         <if test="startDate != null and endDate != null">
-            AND o.order_at >= #{startDate}
-            AND o.order_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+            AND d.disposal_app_at >= #{startDate}
+            AND d.disposal_app_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
         </if>
         GROUP BY s.store_id
         ORDER BY disposalRatePct DESC
@@ -54,12 +54,12 @@
                  JOIN orders o ON s.store_id = o.store_id
                  JOIN order_details od ON o.order_id = od.order_id
                  JOIN ingredients i ON od.ingredient_id = i.ingredient_id
-                 LEFT JOIN disposals d ON od.order_detail_id = d.order_detail_id
+                 LEFT JOIN disposals d ON od.order_detail_id = d.order_detail_id AND d.disposal_status IN ('승인', '완료')
         WHERE od.order_status IN ('승인', '완료')
         AND s.store_id = #{storeId}
         <if test="startDate != null and endDate != null">
-            AND o.order_at >= #{startDate}
-            AND o.order_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+            AND d.disposal_app_at >= #{startDate}
+            AND d.disposal_app_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
         </if>
         GROUP BY s.store_id, i.ingredient_id
         ORDER BY s.store_id, disposal_rate_pct DESC
@@ -73,7 +73,7 @@
                SUM(d.disposal_quantity) AS totalDisposalQuantity
         FROM order_details od
                  JOIN ingredients i ON od.ingredient_id = i.ingredient_id
-                 JOIN disposals d ON od.order_detail_id = d.order_detail_id
+                 JOIN disposals d ON od.order_detail_id = d.order_detail_id AND d.disposal_status IN ('승인', '완료')
         WHERE od.order_status IN ('승인', '완료')
           AND i.usable_flag != 'false'
         <if test="startDate != null and endDate != null">
@@ -94,7 +94,7 @@
                  JOIN orders o ON s.store_id = o.store_id
                  JOIN order_details od ON o.order_id = od.order_id
                  JOIN ingredients i ON od.ingredient_id = i.ingredient_id
-                 JOIN disposals d ON od.order_detail_id = d.order_detail_id
+                 JOIN disposals d ON od.order_detail_id = d.order_detail_id AND d.disposal_status IN ('승인', '완료')
         WHERE od.order_status IN ('승인', '완료')
           AND s.store_id = #{storeId}
         <if test="startDate != null and endDate != null">
@@ -114,7 +114,7 @@
         FROM stores s
                  JOIN orders o ON s.store_id = o.store_id
                  JOIN order_details od ON o.order_id = od.order_id
-                 LEFT JOIN disposals d ON od.order_detail_id = d.order_detail_id
+                 LEFT JOIN disposals d ON od.order_detail_id = d.order_detail_id AND d.disposal_status IN ('승인', '완료')
         WHERE od.order_status IN ('승인', '완료')
         <if test="startDate != null and endDate != null">
             AND d.disposal_app_at >= #{startDate}

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest
@@ -27,7 +28,7 @@ public class MBDisposalStatisticsRepositoryTest {
     @Test
     public void 직영점별_발주_대비_폐기율() {
         List<StoreOrderDisposalRateDTO> orderDisposalRatesByStore = mbDisposalStatisticsRepository.getOrderDisposalRatesByStore(null, null);
-        log.info("test dump : {}", orderDisposalRatesByStore);
+        log.info("test dump {} ~ {} : {}", LocalDate.now().minusDays(40), LocalDate.now().minusDays(30), orderDisposalRatesByStore);
     }
 
     @Test
@@ -40,7 +41,7 @@ public class MBDisposalStatisticsRepositoryTest {
     @Test
     public void 전체직영점_식재료별_폐기_비용() {
         List<DisposalCostByIngredientDTO> disposalCostsByIngredient = mbDisposalStatisticsRepository.getDisposalCostsByIngredient(null, null);
-        log.info("test dump : {}", disposalCostsByIngredient);
+        log.info("test dump size: {}, {}", disposalCostsByIngredient.size(), disposalCostsByIngredient);
     }
 
     @Test
@@ -57,7 +58,7 @@ public class MBDisposalStatisticsRepositoryTest {
 
     @Test
     public void 일자별_폐기_비용_및_수량() {
-        List<DailyDisposalTotalDTO> dailyDisposalTotalsForPeriod = mbDisposalStatisticsRepository.getDailyDisposalTotalsForPeriod(null, null);
+        List<DailyDisposalTotalDTO> dailyDisposalTotalsForPeriod = mbDisposalStatisticsRepository.getDailyDisposalTotalsForPeriod(LocalDate.now().minusDays(60), LocalDate.now());
         log.info("test dump : {}", dailyDisposalTotalsForPeriod);
     }
 
