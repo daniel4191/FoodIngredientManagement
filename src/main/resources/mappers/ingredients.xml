@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.swdl.foodingredientmanagement.repository.IngredientRepository">
+
+<!--    // 1. 식재료 목록 전체 조회-->
+    <select id="findIngredientList" resultType="map">
+        SELECT
+        ingredient_id,
+        ingredient_name,
+        sub_category_name,
+        capacity,
+        capacity_unit,
+        order_unit,
+        storage_type,
+        supply_price
+        FROM ingredients
+    </select>
+
+<!--    // 2. 식재료 목록 소분류별 조회-->
+    <select id="findSubCategoryList" resultType="map">
+        SELECT
+        ingredient_id,
+        ingredient_name,
+        sub_category_name,
+        capacity,
+        capacity_unit,
+        order_unit,
+        storage_type,
+        supply_price
+        FROM ingredients
+        WHERE sub_category_name = #{subCategoryName}
+    </select>
+
+<!--    // 3. 식재료 목록 보관유형별 조회-->
+    <select id="findStorageTypeList" resultType="map">
+        SELECT
+        ingredient_id,
+        ingredient_name,
+        sub_category_name,
+        capacity,
+        capacity_unit,
+        order_unit,
+        storage_type,
+        supply_price
+        FROM ingredients
+        WHERE storage_type = #{storageType}
+    </select>
+
+<!--    // 4. 식재료 선택 삭제 (단일, 다중)-->
+    <delete id="deleteIngredients">
+        DELETE FROM ingredients WHERE ingredient_id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+<!--    // 5. 식재료 정보 등록-->
+    <insert id="insertIngredient"
+            useGeneratedKeys="true"
+            keyProperty="ingredient_id"
+            keyColumn="ingredient_id">
+
+        INSERT INTO ingredients (
+        ingredient_name,
+        major_category_name,
+        sub_category_name,
+        capacity,
+        capacity_unit,
+        order_unit,
+        storage_type,
+        supply_price,
+        expiration_period,
+        management_method,
+        consumption_period,
+        summer_consumption_period,
+        supply_quantity,
+        usable_flag,
+        regist_at
+        )
+        VALUES (
+        #{ingredient_name},
+        #{major_category_name},
+        #{sub_category_name},
+        #{capacity},
+        #{capacity_unit},
+        #{order_unit},
+        #{storage_type},
+        #{supply_price},
+        #{expiration_period},
+        #{management_method},
+        #{consumption_period},
+        #{summer_consumption_period},
+        #{supply_quantity},
+        'Y',
+        NOW()
+        )
+    </insert>
+
+<!--    // 6. 식재료 상세 정보-->
+    <select id="ingredientDetail" resultType="map">
+        SELECT
+        ingredient_id,
+        ingredient_name,
+        major_category_name,
+        sub_category_name,
+        order_unit,
+        capacity,
+        capacity_unit,
+        storage_type,
+        supply_price,
+        supply_quantity,
+        management_method,
+        expiration_period,
+        consumption_period,
+        summer_consumption_period,
+        usable_flag,
+        regist_at
+        FROM ingredients
+        WHERE ingredient_id = #{ingredientId}
+    </select>
+
+<!--    // 7. 식재료 상세 수정-->
+    <update id="ingredientUpdate">
+        UPDATE ingredients
+        SET
+        ingredient_id = #{ingredient_id},
+        ingredient_name = #{ingredient_name},
+        major_category_name = #{major_category_name},
+        sub_category_name = #{sub_category_name},
+        order_unit = #{order_unit},
+        capacity = #{capacity},
+        capacity_unit = #{capacity_unit},
+        storage_type = #{storage_type},
+        supply_price = #{supply_price},
+        supply_quantity = #{supply_quantity},
+        management_method = #{management_method},
+        expiration_period = #{expiration_period},
+        consumption_period = #{consumption_period},
+        summer_consumption_period = #{summer_consumption_period},
+        usable_flag = #{usable_flag},
+        regist_at = #{regist_at}
+        WHERE ingredient_id = #{ingredient_id }
+    </update>
+</mapper>
