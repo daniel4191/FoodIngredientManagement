@@ -9,8 +9,11 @@ import java.util.List;
 
 @Mapper
 public interface MBInventoryRepository {
-//    전체 재고 목록 조회
   List<InventoryListResponse> findInventoryList();
+
+
+
+
 //    조건 재고 목록 조회
  List<InventoryListResponse> findInventoryList(@Param("ingredientId") Long ingredientId,
                                                @Param("storeId") Long storeId,

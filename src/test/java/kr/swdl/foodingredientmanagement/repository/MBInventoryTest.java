@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest
-public class InventoryTest {
+public class MBInventoryTest {
 
     @Autowired
     MBInventoryRepository mbInventoryRepository;
@@ -22,13 +22,13 @@ public class InventoryTest {
 
     @Test
     void 본사_식재료명_재고_목록_조회(){
-        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(3L, null, null, null, null, null);
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(1L, null, null, null, null, null);
         list.forEach(System.out::println);
     }
 
     @Test
     void 본사_직영점명_재고_목록_조회(){
-        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(null, 7L, null, null, null, null);
+        List<InventoryListResponse> list = mbInventoryRepository.findInventoryList(null, 9L, null, null, null, null);
         list.forEach(System.out::println);
     }
 
