@@ -28,38 +28,50 @@ public class MBDisposalStatisticsRepositoryTest {
     @Test
     public void 직영점별_발주_대비_폐기율() {
         List<StoreOrderDisposalRateDTO> orderDisposalRatesByStore = mbDisposalStatisticsRepository.getOrderDisposalRatesByStore(null, null);
-        log.info("test dump {} ~ {} : {}", LocalDate.now().minusDays(40), LocalDate.now().minusDays(30), orderDisposalRatesByStore);
+//        List<StoreOrderDisposalRateDTO> orderDisposalRatesByStore = mbDisposalStatisticsRepository.getOrderDisposalRatesByStore(LocalDate.now().minusDays(40), LocalDate.now().minusDays(5));
+        for (StoreOrderDisposalRateDTO info : orderDisposalRatesByStore) {
+            log.info("{}", info);
+        }
     }
 
     @Test
     public void 특정직영점_식재료별_발주_대비_폐기율() {
         List<StoreOrderDisposalRateDTO> orderDisposalRatesByStore = mbDisposalStatisticsRepository.getOrderDisposalRatesByStore(null, null);
-        log.info("test dump : {}", orderDisposalRatesByStore);
-
+        for (StoreOrderDisposalRateDTO info : orderDisposalRatesByStore) {
+            log.info("{}", info);
+        }
     }
 
     @Test
     public void 전체직영점_식재료별_폐기_비용() {
         List<DisposalCostByIngredientDTO> disposalCostsByIngredient = mbDisposalStatisticsRepository.getDisposalCostsByIngredient(null, null);
-        log.info("test dump size: {}, {}", disposalCostsByIngredient.size(), disposalCostsByIngredient);
+        for (DisposalCostByIngredientDTO info : disposalCostsByIngredient) {
+            log.info("{}", info);
+        }
     }
 
     @Test
     public void 특정직영점_식재료별_폐기_비용() {
         List<DisposalCostByIngredientDTO> disposalCostsByIngredientForStore = mbDisposalStatisticsRepository.getDisposalCostsByIngredientForStore(Long.valueOf(1), null, null);
-        log.info("test dump : {}", disposalCostsByIngredientForStore);
+        for (DisposalCostByIngredientDTO info : disposalCostsByIngredientForStore) {
+            log.info("{}", info);
+        }
     }
 
     @Test
     public void 직영점별_폐기_비용_순위() {
         List<DisposalCostRankingStoreInfoDTO> storeDisposalCostRanking = mbDisposalStatisticsRepository.getStoreDisposalCostRanking(null, null);
-        log.info("test dump : {}", storeDisposalCostRanking);
+        for (DisposalCostRankingStoreInfoDTO info : storeDisposalCostRanking) {
+            log.info("{}", info);
+        }
     }
 
     @Test
     public void 일자별_폐기_비용_및_수량() {
         List<DailyDisposalTotalDTO> dailyDisposalTotalsForPeriod = mbDisposalStatisticsRepository.getDailyDisposalTotalsForPeriod(LocalDate.now().minusDays(60), LocalDate.now());
-        log.info("test dump : {}", dailyDisposalTotalsForPeriod);
+        for (DailyDisposalTotalDTO info : dailyDisposalTotalsForPeriod) {
+            log.info("{}", info);
+        }
     }
 
 
