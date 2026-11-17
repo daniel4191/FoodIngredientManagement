@@ -232,20 +232,24 @@ ex) 도메인_업무_성공여부
    형식: <타입>:<변경 내용>
 
    feat      새로운 기능 추가
-             예시: feat: 회원가입 기능 추가
+             예시: feat:회원가입 기능 추가
 
    fix       버그 및 오류 수정
-             예시: fix: 로그인 실패 오류 수정
+             예시: fix:로그인 실패 오류 수정
 
    refactor  기능 변경 없이 코드 구조 개선
-             예시: refactor: 회원 서비스 로직 정리
+             예시: refactor:회원 서비스 로직 정리
 
    test      테스트 코드 작성 및 수정
-             예시: test: 회원가입 테스트 추가
+             예시: test:회원가입 테스트 추가
 
-   UI        코드 포맷, 들여쓰기, html, css, js 등 수정
-             예시: style: 코드 포맷 정리
+   ui        코드 포맷, 들여쓰기, html, css, js 등 수정
+             예시: style:코드 포맷 정리
 
    chore     설정, 빌드 등 기타 작업
-             예시: chore: Maven 설정 수정
+             예시: chore:Maven 설정 수정
 
+   chore     폴더 구조 및 파일 이름 변경
+             예시: folder:xxx파일명 -> xxxx로 수정
+
+   team      팀 관련 규칙 수정 사항 코드x
