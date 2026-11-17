@@ -3,7 +3,7 @@ package kr.swdl.foodingredientmanagement.dto;
 import lombok.Data;
 
 @Data
-public class IngredientDTO {
+public class IngredientListDTO {
     private String ingredientName;
     private String subCategoryName;
     private int capacity;

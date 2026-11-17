@@ -5,46 +5,105 @@
 <mapper namespace="kr.swdl.foodingredientmanagement.repository.MBIngredientRepository">
 
 <!--    // 1. 식재료 목록 전체 조회-->
-    <select id="getIngredientList" resultType="kr.swdl.foodingredientmanagement.dto.IngredientDTO">
+    <select id="findIngredientList" resultType="kr.swdl.foodingredientmanagement.dto.IngredientListDTO">
         SELECT
-            ingredient_name AS ingredientName,
-            sub_category_name AS subCategoryName,
-            capacity AS capacity,
-            capacity_unit AS capacityUnit,
-            storage_type AS storageType,
-            supply_price AS supplyPrice
+        ingredient_name   AS ingredientName,
+        sub_category_name AS subCategoryName,
+        capacity          AS capacity,
+        capacity_unit     AS capacityUnit,
+        storage_type      AS storageType,
+        supply_price      AS supplyPrice
         FROM ingredients
+        <where>
+            <if test="storageType != null and storageType != ''">
+                AND storage_type = #{storageType}
+            </if>
+            <if test="subCategoryName != null and subCategoryName != ''">
+                AND sub_category_name = #{subCategoryName}
+            </if>
+            <if test="ingredientName != null and ingredientName != ''">
+                AND ingredient_name LIKE CONCAT('%', #{ingredientName}, '%')
+            </if>
+        </where>
     </select>
 
-<!--    // 2. 식재료 목록 소분류별 조회-->
-    <select id="getSubCategoryList" resultType="map">
+    <!--    // 2. 식재료 상세 정보-->
+    <select id="findIngredientDetail" resultType="kr.swdl.foodingredientmanagement.dto.IngredientDetailDTO">
         SELECT
-        ingredient_id,
-        ingredient_name,
-        sub_category_name,
-        capacity,
-        capacity_unit,
-        order_unit,
-        storage_type,
-        supply_price
+        ingredient_id AS ingredientId,
+        ingredient_name AS ingredientName,
+        major_category_name AS majorCategoryName,
+        sub_category_name AS subCategoryName,
+        order_unit AS orderUnit,
+        capacity AS capacity,
+        capacity_unit AS capacityUnit,
+        storage_type AS storageType,
+        supply_price AS supplyPrice,
+        supply_quantity AS supplyQuantity,
+        management_method AS managementMethod,
+        expiration_period AS expirationPeriod,
+        consumption_period AS consumptionPeriod,
+        summer_consumption_period AS summerConsumptionPeriod,
+        usable_flag AS usableFlag,
+        regist_at AS registAt
         FROM ingredients
-        WHERE sub_category_name = #{subCategoryName}
+        WHERE ingredient_id = #{ingredientId}
     </select>
 
-<!--    // 3. 식재료 목록 보관유형별 조회-->
-    <select id="getStorageTypeList" resultType="map">
-        SELECT
-        ingredient_id,
+
+    <!--    // 3. 식재료 정보 등록-->
+    <insert id="addIngredientDetail"
+            parameterType="kr.swdl.foodingredientmanagement.dto.IngredientInsertDTO"
+            useGeneratedKeys="true" keyProperty="ingredientId">
+        INSERT INTO ingredients (
         ingredient_name,
+        major_category_name,
         sub_category_name,
+        storage_type,
+        order_unit,
         capacity,
         capacity_unit,
-        order_unit,
-        storage_type,
-        supply_price
-        FROM ingredients
-        WHERE storage_type = #{storageType}
-    </select>
+        management_method,
+        consumption_period,
+        summer_consumption_period,
+        expiration_period,
+        supply_price,
+        supply_quantity,
+        usable_flag,
+        regist_at
+        ) VALUES (
+        #{ingredientName},
+        #{majorCategoryName},
+        #{subCategoryName},
+        #{storageType},
+        #{orderUnit},
+        #{capacity},
+        #{capacityUnit},
+        #{managementMethod},
+        #{consumptionPeriod},
+        #{summerConsumptionPeriod},
+        #{expirationPeriod},
+        #{supplyPrice},
+        #{supplyQuantity},
+        'Y',
+        NOW()
+        )
+    </insert>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!--    // 4. 식재료 선택 삭제 (단일, 다중)-->
     <delete id="deleteIngredients">
@@ -54,67 +113,8 @@
         </foreach>
     </delete>
 
-<!--    // 5. 식재료 정보 등록-->
-    <insert id="addIngredient">
 
-        INSERT INTO ingredients (
-        ingredient_name,
-        major_category_name,
-        sub_category_name,
-        capacity,
-        capacity_unit,
-        order_unit,
-        storage_type,
-        supply_price,
-        expiration_period,
-        management_method,
-        consumption_period,
-        summer_consumption_period,
-        supply_quantity,
-        usable_flag,
-        regist_at
-        )
-        VALUES (
-        #{ingredient_name},
-        #{major_category_name},
-        #{sub_category_name},
-        #{capacity},
-        #{capacity_unit},
-        #{order_unit},
-        #{storage_type},
-        #{supply_price},
-        #{expiration_period},
-        #{management_method},
-        #{consumption_period},
-        #{summer_consumption_period},
-        #{supply_quantity},
-        'Y',
-        NOW()
-        )
-    </insert>
 
-<!--    // 6. 식재료 상세 정보-->
-    <select id="getIngredientDetail" resultType="map">
-        SELECT
-        ingredient_id,
-        ingredient_name,
-        major_category_name,
-        sub_category_name,
-        order_unit,
-        capacity,
-        capacity_unit,
-        storage_type,
-        supply_price,
-        supply_quantity,
-        management_method,
-        expiration_period,
-        consumption_period,
-        summer_consumption_period,
-        usable_flag,
-        regist_at
-        FROM ingredients
-        WHERE ingredient_id = #{ingredientId}
-    </select>
 
 <!--    // 7. 식재료 상세 수정-->
     <update id="updateIngredient">
