@@ -1,9 +1,9 @@
-package kr.swdl.foodingredientmanagement.repository.vo;
+package kr.swdl.foodingredientmanagement.dto;
 
 import lombok.Data;
 
 @Data
-public class DisposalCostsByIngredientVO {
+public class DisposalCostsByIngredientDTO {
     private String ingredientId;
     private String ingredientName;
     private int totalDisposalPrice;

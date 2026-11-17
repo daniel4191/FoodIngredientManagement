@@ -12,4 +12,5 @@ public class HqDisposalSerachFilterDTO {
     private String disposalType;
     private String processingMethod;
     private String sortType;
+    private int pageCnt;
 }

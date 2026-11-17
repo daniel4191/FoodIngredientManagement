@@ -1,9 +1,9 @@
-package kr.swdl.foodingredientmanagement.repository.vo;
+package kr.swdl.foodingredientmanagement.dto;
 
 import lombok.Data;
 
 @Data
-public class StoreOrderDisposalRateVO {
+public class StoreOrderDisposalRateDTO {
     private Long storeId;
     private String storeName;
     private int totalOrderCount;
