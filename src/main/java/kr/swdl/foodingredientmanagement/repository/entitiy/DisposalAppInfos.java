@@ -1,11 +1,18 @@
 package kr.swdl.foodingredientmanagement.repository.entitiy;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class DisposalAppInfos {
 
     @Id
@@ -14,6 +21,8 @@ public class DisposalAppInfos {
     private Long appUserId;
     private Timestamp checkAt;
     private Long checkUserId;
-    private String disposalImg;
+    @Lob
+    @Column(columnDefinition = "longblob") // DB의 실제 타입과 일치시킴
+    private byte[] disposalImg;
     private Long disposalId;
 }

@@ -1,9 +1,6 @@
 package kr.swdl.foodingredientmanagement.repository.entitiy;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-public class User {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +20,5 @@ public class User {
     private String password;
     private String userName;
     private String role; // HQ_USER, HQ_ADMIN, STORE_STAFF
+    private Long storeId;
 }
