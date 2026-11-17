@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.swdl.foodingredientmanagement.repository.MBDisposalsRepository">
+    <select id="getHqDisposals" parameterType="kr.swdl.foodingredientmanagement.dto.HqDisposalSerachFilterDTO" resultType="kr.swdl.foodingredientmanagement.dto.HQDisposalDTO">
+        SELECT
+        d.disposal_req_at AS disposalReqAt,
+        s.store_name AS storeName,
+        i.ingredient_name AS ingredientName,
+        d.disposal_quantity AS disposalQuantity,
+        d.disposal_price AS disposalPrice,
+        d.disposal_type AS disposalType,
+        d.processing_method AS processingMethod,
+        d.disposal_status AS disposalStatus,
+        dai.check_at AS checkAt
+        FROM disposals d
+                 LEFT OUTER JOIN order_details AS od
+                                 ON d.order_detail_id = od.order_detail_id
+                 LEFT OUTER JOIN ingredients i
+                                 ON od.ingredient_id = i.ingredient_id
+                 LEFT OUTER JOIN orders AS o
+                                 ON od.order_id = o.order_id
+                 LEFT OUTER JOIN stores s
+                                 ON o.store_id = s.store_id
+                 LEFT OUTER JOIN disposal_app_infos dai
+                                 ON dai.disposal_id = d.disposal_id
+        <where>
+            <if test="userId != null">
+                AND s.user_id = #{userId}
+            </if>
+            <if test="storeName != null and storeName != ''">
+                AND s.store_name LIKE CONCAT('%', #{storeName}, '%')
+            </if>
+            <if test="ingredientName != null and ingredientName != ''">
+                AND i.ingredient_name LIKE CONCAT('%', #{ingredientName}, '%')
+            </if>
+            <if test="disposalStatus != null and disposalStatus != ''">
+                AND d.disposal_status = #{disposalStatus}
+            </if>
+            <if test="startDate != null and endDate != null">
+                AND d.disposal_req_at &gt;= #{startDate}
+                AND d.disposal_req_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+            </if>
+            <if test="disposalType != null and disposalType != ''">
+                AND d.disposal_type = #{disposalType}
+            </if>
+            <if test="processingMethod != null and processingMethod != ''">
+                AND d.processing_method = #{processingMethod}
+            </if>
+        </where>
+        ORDER BY d.disposal_req_at
+        <choose>
+            <when test="sortType != null and sortType.equalsIgnoreCase('DESC')">
+                DESC
+            </when>
+            <otherwise>
+                ASC
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="countByTodayDisposed" resultType="int">
+
+        SELECT COUNT(*) FROM disposals
+        WHERE disposal_status IN ('승인', '완료') AND
+        disposal_app_at >= CURDATE() AND
+        CURDATE() + INTERVAL 1 DAY > disposal_app_at
+    </select>
+
+
+    <select id="sumByTodayDisposedPrice" resultType="int">
+        SELECT IFNULL(SUM(disposal_price), 0) FROM disposals AS d
+        WHERE disposal_status IN ('승인', '완료') AND
+        disposal_app_at >= CURDATE() AND
+        CURDATE() + INTERVAL 1 DAY > disposal_app_at
+    </select>
+
+    <select id="countNeedToConfirmByStoreId" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM
+            disposals d,
+            order_details od,
+            orders o,
+            stores s,
+            disposal_app_infos dai
+        WHERE
+            d.order_detail_id = od.order_detail_id AND
+            od.order_id = o.order_id AND
+            o.store_id = s.store_id AND
+            dai.disposal_id = d.disposal_id AND -- 폐기 확인정보가 기리키는  폐기
+            s.store_id = #{storeId} AND  -- 직영점 일려번호와
+            d.disposal_status = '승인' AND
+            (dai.check_at IS NULL OR -- 폐기 확인이 안된 경우
+             dai.check_user_id IS NULL        OR -- 폐기 확인이 안된 경우
+             dai.disposal_img IS NULL); -- 폐기 확인이 안된 경우
+    </select>
+
+    <select id="getStoreDisposals" parameterType="kr.swdl.foodingredientmanagement.dto.StoreDisposalSerachFilterDTO" resultType="kr.swdl.foodingredientmanagement.dto.StoreDisposalDTO">
+        SELECT
+            d.disposal_req_at AS disposalReqAt,
+            i.ingredient_name AS ingredientName,
+            d.disposal_quantity AS disposalQuantity,
+            d.disposal_price AS disposalPrice,
+            d.disposal_type AS disposalType,
+            d.processing_method AS processingMethod,
+            d.disposal_status AS disposalStatus,
+            dai.check_at AS checkAt
+        FROM disposals d
+                 LEFT OUTER JOIN order_details AS od
+                                 ON d.order_detail_id = od.order_detail_id
+                 LEFT OUTER JOIN ingredients i
+                                 ON od.ingredient_id = i.ingredient_id
+                 LEFT OUTER JOIN orders AS o
+                                 ON od.order_id = o.order_id  -- [수정 완료] o.order_id로 변경
+                 LEFT OUTER JOIN stores s
+                                 ON o.store_id = s.store_id
+                 LEFT OUTER JOIN disposal_app_infos dai
+                                 ON dai.disposal_id = d.disposal_id
+        WHERE s.store_id = #{storeId}
+        <where>
+            <if test="ingredientName != null and ingredientName != ''">
+                AND i.ingredient_name LIKE CONCAT('%', #{ingredientName}, '%')
+            </if>
+            <if test="disposalStatus != null and disposalStatus != ''">
+                AND d.disposal_status = #{disposalStatus}
+            </if>
+            <if test="startDate != null and endDate != null">
+                AND d.disposal_req_at &gt;= #{startDate}
+                AND d.disposal_req_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+            </if>
+            <if test="processingMethod != null and processingMethod != ''">
+                AND d.processing_method = #{processingMethod}
+            </if>
+        </where>
+        ORDER BY d.disposal_req_at
+        <choose>
+            <when test="sortType != null and sortType.equalsIgnoreCase('DESC')">
+                DESC
+            </when>
+            <otherwise>
+                ASC
+            </otherwise>
+        </choose>
+    </select>
+</mapper>
