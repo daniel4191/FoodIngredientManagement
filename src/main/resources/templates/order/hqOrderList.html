@@ -60,13 +60,7 @@
             <label class="form-label small fw-semibold">검색어</label>
             <input class="form-control form-control-sm" type="text" placeholder="번호/지점" value="">
           </div>
-          <div class="col-12 col-md-3">
-            <label class="form-label small fw-semibold">일자 구분</label>
-            <select class="form-select form-select-sm">
-              <option selected>발주일시</option>
-              <option>입고완료일시</option>
-            </select>
-          </div>
+
           <div class="col-12 col-md-3">
             <label class="form-label small fw-semibold">시작일</label>
             <input class="form-control form-control-sm" type="date" value="2026-11-01">
@@ -74,6 +68,13 @@
           <div class="col-12 col-md-3">
             <label class="form-label small fw-semibold">종료일</label>
             <input class="form-control form-control-sm" type="date" value="2026-11-06">
+          </div>
+          <div class="col-12 col-md-3">
+            <label class="form-label small fw-semibold">일자 구분</label>
+            <select class="form-select form-select-sm">
+              <option selected>발주일시</option>
+              <option>입고완료일시</option>
+            </select>
           </div>
           <div class="col-12 col-md-3">
             <label class="form-label small fw-semibold">발주상태</label>
@@ -132,9 +133,12 @@
               </td>
               <td>—</td>
               <td>
-                <a class="btn btn-outline-primary btn-sm text-nowrap" href="hqOrderDetail.html">
+                <button type="button"
+                        class="btn btn-outline-primary btn-sm text-nowrap"
+                        data-bs-toggle="modal"
+                        data-bs-target="#hqOrderDetailModal">
                   상세
-                </a>
+                </button>
               </td>
             </tr>
 
@@ -167,29 +171,168 @@
         </p>
       </section>
 
-      <!-- 선택 발주 처리 -->
-      <section class="card hq-card p-3 mb-3">
-        <h6 class="fw-bold mb-3">선택 발주 처리</h6>
-        <div class="row g-3">
-          <div class="col-12 col-md-3">
-            <label class="form-label small fw-semibold">변경 상태</label>
-            <select class="form-select form-select-sm">
-              <option selected>대기</option>
-              <option>승인</option>
-              <option>거절</option>
-            </select>
-          </div>
-          <div class="col-12 col-md-3">
-            <label class="form-label small fw-semibold">공통 사유</label>
-            <input class="form-control form-control-sm" type="text" placeholder="처리 사유" value="">
-          </div>
-        </div>
-        <div class="d-flex justify-content-end flex-wrap gap-2 mt-3">
-          <button type="button" class="btn btn-primary btn-sm" disabled>일괄 처리</button>
-        </div>
-      </section>
+
     </div>
   </main>
 </div>
+
+<!-- 본사 발주 상세 모달 -->
+<div class="modal fade" id="hqOrderDetailModal" tabindex="-1"
+     aria-labelledby="hqOrderDetailModalLabel" aria-hidden="true">
+
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <!-- 모달 헤더 -->
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="hqOrderDetailModalLabel">
+          발주 상세 조회 (본사)
+        </h5>
+        <button type="button" class="btn-close"
+                data-bs-dismiss="modal" aria-label="닫기"></button>
+      </div>
+
+      <!-- 모달 본문 -->
+      <div class="modal-body">
+
+        <!-- 발주 기본 정보 -->
+        <section class="card hq-card p-3 mb-3">
+          <h6 class="fw-bold mb-3">발주 기본 정보</h6>
+
+          <div class="row g-3">
+            <div class="col-6 col-lg-3">
+              <div class="small text-secondary">발주일련번호</div>
+              <div class="fw-semibold">202611030001</div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="small text-secondary">발주일시</div>
+              <div class="fw-semibold">2026-11-03 10:30</div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="small text-secondary">직영점명</div>
+              <div class="fw-semibold">강남점</div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="small text-secondary">상태</div>
+              <div class="fw-semibold">대기</div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="small text-secondary">처리일시</div>
+              <div class="fw-semibold">—</div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="small text-secondary">입고일시</div>
+              <div class="fw-semibold">—</div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="small text-secondary">총 발주금액</div>
+              <div class="fw-semibold">101,000원</div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="small text-secondary">승인 담당자</div>
+              <div class="fw-semibold">본사 관리자</div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 발주 상세 품목 -->
+        <section class="card hq-card p-3 mb-3">
+          <h6 class="fw-bold mb-3">발주 상세 품목</h6>
+
+          <div class="table-responsive">
+            <table id="hqOrderItemTable"
+                   class="table table-hover align-middle hq-table table-sm mb-0">
+              <thead>
+              <tr>
+                <th>
+                  <input id="selectAllItems" type="checkbox"
+                         class="form-check-input m-0">
+                </th>
+                <th>순번</th>
+                <th>식재료</th>
+                <th>요청수량</th>
+                <th>입고단위</th>
+                <th>단가</th>
+                <th>요청금액</th>
+                <th>변경 상태</th>
+                <th>거절·조정 사유</th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr>
+                <td>
+                  <input type="checkbox" class="form-check-input item-check">
+                </td>
+                <td>1</td>
+                <td>양상추</td>
+                <td>3</td>
+                <td>박스</td>
+                <td>25,000원</td>
+                <td>75,000원</td>
+                <td>
+                  <select name="items[0].decision"
+                          class="form-select form-select-sm item-decision">
+                    <option value="PENDING" selected>대기</option>
+                    <option value="APPROVE">승인</option>
+                    <option value="PARTIAL">부분 승인</option>
+                    <option value="REJECT">거절</option>
+                  </select>
+                </td>
+                <td>
+                  <input name="items[0].reason" type="text" maxlength="200"
+                         class="form-control form-control-sm item-reason"
+                         placeholder="사유">
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <input type="checkbox" class="form-check-input item-check">
+                </td>
+                <td>2</td>
+                <td>토마토소스</td>
+                <td>2</td>
+                <td>팩</td>
+                <td>13,000원</td>
+                <td>26,000원</td>
+                <td>
+                  <select name="items[1].decision"
+                          class="form-select form-select-sm item-decision">
+                    <option value="PENDING" selected>대기</option>
+                    <option value="APPROVE">승인</option>
+                    <option value="PARTIAL">부분 승인</option>
+                    <option value="REJECT">거절</option>
+                  </select>
+                </td>
+                <td>
+                  <input name="items[1].reason" type="text" maxlength="200"
+                         class="form-control form-control-sm item-reason"
+                         placeholder="사유">
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+ 
+      </div>
+
+      <!-- 모달 하단 -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm" disabled>
+          처리 결과 저장
+        </button>
+        <button type="button" class="btn btn-outline-secondary btn-sm"
+                data-bs-dismiss="modal">
+          닫기
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
