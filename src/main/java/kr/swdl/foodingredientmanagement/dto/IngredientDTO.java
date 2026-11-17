@@ -5,6 +5,15 @@ import lombok.Data;
 @Data
 public class IngredientDTO {
     private String ingredientName;
-    private Integer supplyPrice;
-    private Integer supplyQuantity;
+    private String subCategoryName;
+    private int capacity;
+    private String capacityUnit;
+    private String orderUnit ;
+    private String storageType;
+    private int supplyPrice;
+
+
+    private int supplyQuantity;
+
+
 }
