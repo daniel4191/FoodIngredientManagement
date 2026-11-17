@@ -1,6 +1,6 @@
-package kr.swdl.foodingredientmanagement.repository.vo;
+package kr.swdl.foodingredientmanagement.dto;
 
-public class IngredientDisposalRateToOrderByStoreVO {
+public class IngredientDisposalRateToOrderByStoreDTO {
 
     private Long storeId;
     private String storeName;

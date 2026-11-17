@@ -1,6 +1,6 @@
 package kr.swdl.foodingredientmanagement.repository;
 
-import kr.swdl.foodingredientmanagement.repository.vo.*;
+import kr.swdl.foodingredientmanagement.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,19 +13,19 @@ public interface MBDisposalStatisticsRepository {
     double getOrderDisposalRateUntilNow(@Param("startDate") LocalDate startDate,
                                      @Param("endDate") LocalDate endDate);
 
-    List<StoreOrderDisposalRateVO> getOrderDisposalRatesByStore(@Param("startDate") LocalDate startDate,
+    List<StoreOrderDisposalRateDTO> getOrderDisposalRatesByStore(@Param("startDate") LocalDate startDate,
+                                                                 @Param("endDate") LocalDate endDate);
+
+    List<IngredientDisposalRateToOrderByStoreDTO> getStoreIngredientDisposalRates(@Param("storeId")Long storeId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    List<DisposalCostByIngredientDTO> getDisposalCostsByIngredient(@Param("startDate") LocalDate startDate,
+                                                                   @Param("endDate") LocalDate endDate);
+
+    List<DisposalCostByIngredientDTO> getDisposalCostsByIngredientForStore(@Param("storeId") Long storeId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    List<DisposalCostRankingStoreInfoDTO> getStoreDisposalCostRanking(@Param("startDate") LocalDate startDate,
+                                                                      @Param("endDate") LocalDate endDate);
+
+    List<DailyDisposalTotalDTO> getDailyDisposalTotalsForPeriod(@Param("startDate") LocalDate startDate,
                                                                 @Param("endDate") LocalDate endDate);
-
-    List<IngredientDisposalRateToOrderByStoreVO> getStoreIngredientDisposalRates(@Param("storeId")Long storeId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
-    List<DisposalCostByIngredientVO> getDisposalCostsByIngredient(@Param("startDate") LocalDate startDate,
-                                                                  @Param("endDate") LocalDate endDate);
-
-    List<DisposalCostByIngredientVO> getDisposalCostsByIngredientForStore(@Param("storeId") Long storeId,  @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
-    List<DisposalCostRankingStoreInfoVO> getStoreDisposalCostRanking(@Param("startDate") LocalDate startDate,
-                                                                     @Param("endDate") LocalDate endDate);
-
-    List<DailyDisposalTotalVO> getDailyDisposalTotalsForPeriod(@Param("startDate") LocalDate startDate,
-                                                               @Param("endDate") LocalDate endDate);
 }

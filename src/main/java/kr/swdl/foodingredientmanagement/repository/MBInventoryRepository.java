@@ -45,9 +45,6 @@ public interface MBInventoryRepository {
     List<StoreInventoryListResponse> findStoreInventoryList(@Param("storeId") Long storeId,
                                                             @Param("subCategoryName") String subCategoryName,
                                                             @Param("ingredientId") Long ingredientId);
-
-
-
 }
 
 

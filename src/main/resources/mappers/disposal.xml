@@ -96,7 +96,7 @@
              dai.disposal_img IS NULL); -- 폐기 확인이 안된 경우
     </select>
 
-    <select id="getStoreDisposals" parameterType="kr.swdl.foodingredientmanagement.dto.HqDisposalSerachFilterDTO" resultType="kr.swdl.foodingredientmanagement.dto.StoreDisposalDTO">
+    <select id="getStoreDisposals" parameterType="kr.swdl.foodingredientmanagement.dto.StoreDisposalSerachFilterDTO" resultType="kr.swdl.foodingredientmanagement.dto.StoreDisposalDTO">
         SELECT
             d.disposal_req_at AS disposalReqAt,
             i.ingredient_name AS ingredientName,
@@ -118,6 +118,29 @@
                  LEFT OUTER JOIN disposal_app_infos dai
                                  ON dai.disposal_id = d.disposal_id
         WHERE s.store_id = #{storeId}
+        <where>
+            <if test="ingredientName != null and ingredientName != ''">
+                AND i.ingredient_name LIKE CONCAT('%', #{ingredientName}, '%')
+            </if>
+            <if test="disposalStatus != null and disposalStatus != ''">
+                AND d.disposal_status = #{disposalStatus}
+            </if>
+            <if test="startDate != null and endDate != null">
+                AND d.disposal_req_at &gt;= #{startDate}
+                AND d.disposal_req_at &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+            </if>
+            <if test="processingMethod != null and processingMethod != ''">
+                AND d.processing_method = #{processingMethod}
+            </if>
+        </where>
+        ORDER BY d.disposal_req_at
+        <choose>
+            <when test="sortType != null and sortType.equalsIgnoreCase('DESC')">
+                DESC
+            </when>
+            <otherwise>
+                ASC
+            </otherwise>
+        </choose>
     </select>
-
 </mapper>

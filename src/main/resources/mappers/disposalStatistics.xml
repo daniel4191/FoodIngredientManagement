@@ -20,7 +20,7 @@
     </select>
 
     <!-- 2. 직영점별 발주 대비 폐기율 -->
-    <select id="getOrderDisposalRatesByStore" resultType="kr.swdl.foodingredientmanagement.repository.vo.StoreOrderDisposalRateVO">
+    <select id="getOrderDisposalRatesByStore" resultType="kr.swdl.foodingredientmanagement.dto.StoreOrderDisposalRateDTO">
         SELECT s.store_id AS storeId,
                s.store_name AS storeName,
                COUNT(od.order_detail_id)                  AS totalOrderCount,
@@ -41,7 +41,7 @@
     </select>
 
     <!-- 3. 특정 직영점 식재료별 발주 대비 폐기율 -->
-    <select id="getStoreIngredientDisposalRates" resultType="kr.swdl.foodingredientmanagement.repository.vo.IngredientDisposalRateToOrderByStoreVO">
+    <select id="getStoreIngredientDisposalRates" resultType="kr.swdl.foodingredientmanagement.dto.IngredientDisposalRateToOrderByStoreDTO">
         SELECT s.store_id AS storeId,
                s.store_name AS storeName,
                i.ingredient_id AS ingredientId,
@@ -66,7 +66,7 @@
     </select>
 
     <!-- 4. 전체 직영점의 식재료별 폐기 비용 -->
-    <select id="getDisposalCostsByIngredient" resultType="kr.swdl.foodingredientmanagement.repository.vo.DisposalCostByIngredientVO">
+    <select id="getDisposalCostsByIngredient" resultType="kr.swdl.foodingredientmanagement.dto.DisposalCostByIngredientDTO">
         SELECT i.ingredient_id AS ingredientId,
                i.ingredient_name AS ingredientName,
                SUM(d.disposal_price)    AS totalDisposalPrice,
@@ -85,7 +85,7 @@
     </select>
 
     <!-- 5. 특정 직영점의 식재료별 폐기 비용 -->
-    <select id="getDisposalCostsByIngredientForStore" resultType="kr.swdl.foodingredientmanagement.repository.vo.DisposalCostByIngredientVO">
+    <select id="getDisposalCostsByIngredientForStore" resultType="kr.swdl.foodingredientmanagement.dto.DisposalCostByIngredientDTO">
         SELECT i.ingredient_id AS ingredientId,
                i.ingredient_name AS ingredientName,
                SUM(d.disposal_price)    AS totalDisposalPrice,
@@ -106,7 +106,7 @@
     </select>
 
     <!-- 6. 직영점별 폐기 비용 순위 -->
-    <select id="getStoreDisposalCostRanking" resultType="kr.swdl.foodingredientmanagement.repository.vo.DisposalCostRankingStoreInfoVO">
+    <select id="getStoreDisposalCostRanking" resultType="kr.swdl.foodingredientmanagement.dto.DisposalCostRankingStoreInfoDTO">
         SELECT s.store_id AS storeId,
                s.store_name AS storeName,
                SUM(COALESCE(d.disposal_price, 0))    AS totalDisposalPrice,
@@ -125,7 +125,7 @@
     </select>
 
     <!-- 7. 최근 7일간 일자별 폐기 비용 및 수량 -->
-    <select id="getDailyDisposalTotalsForPeriod" resultType="kr.swdl.foodingredientmanagement.repository.vo.DailyDisposalTotalVO">
+    <select id="getDailyDisposalTotalsForPeriod" resultType="kr.swdl.foodingredientmanagement.dto.DailyDisposalTotalDTO">
         SELECT DATE(d.disposal_app_at)  AS disposalDate,
                COUNT(d.disposal_id)     AS disposalCount,
                SUM(d.disposal_quantity) AS totalDisposalQuantity,
