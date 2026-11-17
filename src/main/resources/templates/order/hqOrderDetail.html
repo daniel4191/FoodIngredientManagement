@@ -35,32 +35,6 @@
         </div>
       </section>
 
-      <!-- 선택 품목 일괄 처리: 입력 UI만 제공하며 자동 적용은 추후 연결 -->
-      <section class="card hq-card p-3 mb-3">
-        <h6 class="fw-bold mb-3">선택 품목 일괄 처리</h6>
-        <div class="row g-2 align-items-end">
-          <div class="col-12 col-md-3">
-            <label for="bulkDecision" class="form-label small fw-semibold">변경 상태</label>
-            <select id="bulkDecision" class="form-select form-select-sm">
-              <option value="APPROVE">승인</option>
-              <option value="REJECT">거절</option>
-              <option value="PARTIAL">부분 승인</option>
-              <option value="PENDING" selected>대기</option>
-            </select>
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="bulkReason" class="form-label small fw-semibold">공통 거절·조정 사유</label>
-            <input id="bulkReason" type="text" maxlength="200" class="form-control form-control-sm"
-                   placeholder="거절 또는 부분 승인 사유를 입력하세요">
-          </div>
-          <div class="col-12 col-md-3">
-            <button type="button" class="btn btn-outline-primary btn-sm" disabled
-                    title="일괄 변경 기능 연동 전">선택 품목 적용</button>
-          </div>
-        </div>
-        <p class="small text-secondary mt-2 mb-0">현재는 입력 화면입니다. 체크박스 연동과 일괄 변경은 추후 구현합니다.</p>
-      </section>
-
       <!-- 품목별 선택 / 처리 상태 / 승인 수량 / 거절 사유 -->
       <section class="card hq-card p-3 mb-3">
         <h6 class="fw-bold mb-3">발주 상세 품목</h6>
