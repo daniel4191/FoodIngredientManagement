@@ -2,6 +2,8 @@ package kr.swdl.foodingredientmanagement.repository;
 
 import kr.swdl.foodingredientmanagement.dto.HQDisposalDTO;
 import kr.swdl.foodingredientmanagement.dto.HqDisposalSerachFilterDTO;
+import kr.swdl.foodingredientmanagement.dto.StoreDisposalDTO;
+import kr.swdl.foodingredientmanagement.dto.StoreDisposalSerachFilterDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,8 +31,10 @@ public class MBDisposalsRepositoryTest {
                 .endDate(null)
                 .disposalType(null)
                 .processingMethod(null)
+                .userId(2L)
                 .sortType(null).build();
         List<HQDisposalDTO> disposals = mbDisposalsRepository.getHqDisposals(filterDTO);
+        log.info("{}", disposals.size());
         Assertions.assertTrue(disposals.size() >= 0);
     }
 
@@ -44,6 +48,7 @@ public class MBDisposalsRepositoryTest {
                 .endDate(null)
                 .disposalType(null)
                 .processingMethod(null)
+                .userId(2L)
                 .sortType("asc").build();
         List<HQDisposalDTO> disposals = mbDisposalsRepository.getHqDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
@@ -59,6 +64,7 @@ public class MBDisposalsRepositoryTest {
                 .endDate(null)
                 .disposalType(null)
                 .processingMethod(null)
+                .userId(2L)
                 .sortType("desc").build();
         List<HQDisposalDTO> disposals = mbDisposalsRepository.getHqDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
@@ -74,6 +80,7 @@ public class MBDisposalsRepositoryTest {
                 .endDate(null)
                 .disposalType(null)
                 .processingMethod(null)
+                .userId(2L)
                 .sortType(null).build();
         List<HQDisposalDTO> disposals = mbDisposalsRepository.getHqDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
@@ -89,6 +96,7 @@ public class MBDisposalsRepositoryTest {
                 .endDate(null)
                 .disposalType(null)
                 .processingMethod(null)
+                .userId(2L)
                 .sortType(null).build();
         List<HQDisposalDTO> disposals = mbDisposalsRepository.getHqDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
@@ -104,6 +112,7 @@ public class MBDisposalsRepositoryTest {
                 .endDate(null)
                 .disposalType(null)
                 .processingMethod(null)
+                .userId(2L)
                 .sortType(null).build();
         List<HQDisposalDTO> disposals = mbDisposalsRepository.getHqDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
@@ -119,6 +128,7 @@ public class MBDisposalsRepositoryTest {
                 .endDate("2026-11-1")
                 .disposalType(null)
                 .processingMethod(null)
+                .userId(2L)
                 .sortType(null).build();
         List<HQDisposalDTO> disposals = mbDisposalsRepository.getHqDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
@@ -134,6 +144,7 @@ public class MBDisposalsRepositoryTest {
                 .endDate(null)
                 .disposalType("위생(변질)")
                 .processingMethod(null)
+                .userId(2L)
                 .sortType(null).build();
         List<HQDisposalDTO> disposals = mbDisposalsRepository.getHqDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
@@ -149,6 +160,7 @@ public class MBDisposalsRepositoryTest {
                 .endDate(null)
                 .disposalType(null)
                 .processingMethod("정기폐기")
+                .userId(2L)
                 .sortType(null).build();
         List<HQDisposalDTO> disposals = mbDisposalsRepository.getHqDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
@@ -166,6 +178,7 @@ public class MBDisposalsRepositoryTest {
                 .endDate("2026-11-11")
                 .disposalType("입고 품질 불량")
                 .processingMethod("정기폐기")
+                .userId(2L)
                 .sortType("desc").build();
         List<HQDisposalDTO> disposals = mbDisposalsRepository.getHqDisposals(filterDTO);
         Assertions.assertTrue(disposals.size() >= 0);
@@ -189,4 +202,20 @@ public class MBDisposalsRepositoryTest {
     public void 금일_폐기확인필요_개수() {
         System.out.println(mbDisposalsRepository.countNeedToConfirmByStoreId(3));
     }
+
+    @Test
+    public void 직영점_폐기목록_조회() {
+        StoreDisposalSerachFilterDTO filterDTO = StoreDisposalSerachFilterDTO.builder()
+                .ingredientName(null)
+                .disposalStatus(null)
+                .startDate(null)
+                .endDate(null)
+                .processingMethod(null)
+                .storeId(1L)
+                .sortType(null).build();
+        List<StoreDisposalDTO> disposals = mbDisposalsRepository.getStoreDisposals(filterDTO);
+        System.out.println(disposals);
+        Assertions.assertTrue(disposals.size() >= 0);
+    }
+
 }

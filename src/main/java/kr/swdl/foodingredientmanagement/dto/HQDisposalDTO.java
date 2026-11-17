@@ -17,5 +17,4 @@ public class HQDisposalDTO {
     private String processingMethod;
     private String disposalStatus;
     private Timestamp checkAt;
-    private Long userId;
 }
