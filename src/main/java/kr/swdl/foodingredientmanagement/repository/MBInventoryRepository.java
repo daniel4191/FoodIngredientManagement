@@ -19,20 +19,18 @@ public interface MBInventoryRepository {
                                                @Param("manageStartDate") LocalDate manageStartDate,
                                                @Param("manageEndDate") LocalDate manageEndDate);
 
- // 특정 직영점의 특정 재고 상세 조회
- // 잔여수량
+     // 특정 직영점의 특정 재고 상세 조회
+    // 잔여수량
     InventoryListResponse findInventoryCurrentQuantity(@Param("storeId") Long storeId,
                                                        @Param("ingredientId") Long ingredientId);
 
-// 식재료 정보
+    // 식재료 정보
     InventoryIngredientResponse findInventoryIngredient(@Param("storeId") Long storeId,
                                                         @Param("ingredientId") Long ingredientId);
-
 
     // 입고 정보
     InventoryOrderResponse findInventoryOrder(@Param("storeId") Long storeId,
                                                   @Param("ingredientId") Long ingredientId);
-
 
 
     // 사용이력

@@ -128,6 +128,33 @@ public class InventoryTest {
     void 직영점_식재료명_재고_목록_조회(){
         List<StoreInventoryListResponse> list = mbInventoryRepository.findStoreInventoryList(1L, null, 12L);
         list.forEach(System.out::println);
+    }
+
+    @Test
+    void 직영점_분류_식재료명_재고_목록_조회(){
+        List<StoreInventoryListResponse> list = mbInventoryRepository.findStoreInventoryList(5L, "육가공류", 14L);
+        list.forEach(System.out::println);
+
+    }
+
+    @Test
+    void 직영점__재고_상세_조회_잔여수량(){
+        InventoryListResponse inventoryListResponse = mbInventoryRepository.findInventoryCurrentQuantity(5L, 14L);
+        System.out.println(inventoryListResponse);
+
+    }
+
+    @Test
+    void 직영점__재고_상세_조회_식재료정보(){
+        InventoryIngredientResponse inventoryIngredientResponse = mbInventoryRepository.findInventoryIngredient(5L, 14L);
+        System.out.println(inventoryIngredientResponse);
+
+    }
+
+    @Test
+    void 직영점_재고_상세_조회_사용이력(){
+        InventoryOrderResponse inventoryOrderResponse = mbInventoryRepository.findInventoryOrder(5L, 14L);
+        System.out.println(inventoryOrderResponse);
 
     }
 
