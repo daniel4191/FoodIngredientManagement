@@ -21,8 +21,9 @@ public class JPADisposalCategoriesRepositoryTest {
         Assertions.assertTrue(jpaDisposalCategoriesRepository.findAll().size() > 0);
     }
 
+    // JAP_CustomQuery
     @Test
-    public void 폐기유형_대분류_가져오기_JAP_CustomQuery() {
+    public void 폐기유형_대분류_가져오기_커스텀쿼리() {
         // TODO: 서비스 계층
         List<String> list = jpaDisposalCategoriesRepository.findDisposalType();
         for (String disposalType: list) {
@@ -36,8 +37,9 @@ public class JPADisposalCategoriesRepositoryTest {
         Assertions.assertTrue(jpaDisposalCategoriesRepository.findAllByDisposalType("식재료 규칙").size() > 0);
     }
 
+    // JAP_CustomQuery
     @Test
-    public void 특정_폐기유형의_폐기사유_가져오기_JAP_CustomQuery() {
+    public void 특정_폐기유형의_폐기사유_가져오기_커스텀쿼리() {
         List<String> list = jpaDisposalCategoriesRepository.findDisposalReasonByDisposalType("식재료 규칙");
         for (String disposalName : list) {
             log.info("{}", disposalName);
