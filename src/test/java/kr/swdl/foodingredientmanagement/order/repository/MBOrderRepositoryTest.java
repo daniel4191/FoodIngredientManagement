@@ -64,8 +64,9 @@ public class MBOrderRepositoryTest {
                 continue;
             }
 
-            log.info("발주번호: {}, 발주상태: {}",
+            log.info("발주번호: {}, 발주상세번호: {}, 발주상태: {}",
                     status.getOrderId(),
+                    status.getOrderDetailId(),
                     status.getOrderStatus());
         }
         assertNotNull(result);
@@ -208,8 +209,6 @@ public class MBOrderRepositoryTest {
             log.info("거절 사유: {}", detail.getRejectReason());
             log.info("-----------------------------------------");
         }
-
-
     }
 
     @Test
@@ -250,4 +249,6 @@ public class MBOrderRepositoryTest {
         log.info("입고, 제조일 변경 결과 : {}", result);
         assertEquals(1,result);
     }
+
+
 }

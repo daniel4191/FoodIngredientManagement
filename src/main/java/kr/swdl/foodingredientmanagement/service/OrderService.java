@@ -1,6 +1,7 @@
 package kr.swdl.foodingredientmanagement.service;
 
 import jakarta.transaction.Transactional;
+import kr.swdl.foodingredientmanagement.dto.OrderDTO;
 import kr.swdl.foodingredientmanagement.dto.OrderDetailRequestDTO;
 import kr.swdl.foodingredientmanagement.dto.OrderStatusCountDTO;
 import kr.swdl.foodingredientmanagement.dto.OrderStatusDTO;
@@ -43,7 +44,7 @@ public class OrderService {
             throw new IllegalStateException("총금액 갱신 실패");
         }
 
-        return orderId; //생성 후
+        return orderId;
     }
 
     public int approveOrder(Long orderDetailId) {
@@ -51,8 +52,8 @@ public class OrderService {
         return result;
     }
 
-    public int rejectOrder(Long orderDetailId, String rejectReaseon){
-        int result = mbOrderRepository.rejectOrderDetail(orderDetailId, rejectReaseon) ;
+    public int rejectOrder(Long orderDetailId, String rejectReason){
+        int result = mbOrderRepository.rejectOrderDetail(orderDetailId, rejectReason) ;
         return result;
     }
 
@@ -62,6 +63,15 @@ public class OrderService {
     }
 
     public OrderStatusCountDTO countOrderStatus(){
+
         return mbOrderRepository.countOrderStatus();
+    }
+
+    public List<OrderStatusDTO> findOrderStatusList(){
+        return mbOrderRepository.findOrderStatusList();
+    }
+
+    public List<OrderDTO> findOrderList(){
+        return mbOrderRepository.findOrderList();
     }
 }

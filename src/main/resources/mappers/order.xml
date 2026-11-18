@@ -22,6 +22,7 @@
             resultType="kr.swdl.foodingredientmanagement.dto.OrderStatusDTO">
         SELECT
         o.order_id AS orderId,
+        od.order_detail_id AS orderDetailId,
         od.order_status AS orderStatus
 
         FROM orders o
