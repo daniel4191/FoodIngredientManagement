@@ -57,7 +57,7 @@ public class TestController {
     }
 
     @GetMapping("/storeOrderList")
-    public String sotreOrderList(){
+    public String storeOrderList(){
         return "order/storeOrderList";
     }
 

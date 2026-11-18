@@ -1,6 +1,6 @@
 package kr.swdl.foodingredientmanagement.service;
 
-import kr.swdl.foodingredientmanagement.repository.IngredientRepository;
+import kr.swdl.foodingredientmanagement.repository.JPAIngredientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,10 +11,10 @@ import java.util.Map;
 public class IngredientService {
 
     // repository 연결
-    private final IngredientRepository ingredientRepository;
+    private final JPAIngredientRepository ingredientRepository;
 
     // 생성자를 통해 Repository 주입
-    public IngredientService(IngredientRepository ingredientRepository){
+    public IngredientService(JPAIngredientRepository ingredientRepository){
         this.ingredientRepository = ingredientRepository;
     }
 

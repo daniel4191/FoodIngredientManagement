@@ -1,6 +1,5 @@
 package kr.swdl.foodingredientmanagement.repository;
 
-import org.apache.ibatis.annotations.Param;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class IngredientRepositoryTest {
 
     @Autowired
-    private IngredientRepository ingredientRepository;
+    private JPAIngredientRepository ingredientRepository;
 
     // 1. 식재료 목록 전체 조회
     @Test
