@@ -8,7 +8,6 @@ import java.sql.Timestamp;
 
 @Data
 @Builder
-@ToString
 public class StoreDisposalDTO {
     private Timestamp disposalReqAt;
     private String ingredientName;

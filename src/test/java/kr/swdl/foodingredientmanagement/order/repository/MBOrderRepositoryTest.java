@@ -23,11 +23,12 @@ public class MBOrderRepositoryTest {
     @Test
     void 발주_상태_전체_조회(){
         OrderStatusCountDTO result = mbOrderRepository.countOrderStatus();
-        assertThat(result).isNotNull();
 
         log.info("대기 : {}", result.getWaitingCount());
         log.info("승인 : {}", result.getApprovedCount());
         log.info("거절 : {}", result.getRejectedCount());
+
+        assertThat(result).isNotNull();
     }
 
     @Test
@@ -35,9 +36,6 @@ public class MBOrderRepositoryTest {
 
         List<OrderDTO> result =
                 mbOrderRepository.findOrderList();
-
-        assertThat(result).isNotEmpty();
-
         for (OrderDTO order : result) {
             log.info("발주번호: {}", order.getOrderId());
             log.info("매장명: {}", order.getStoreName());
@@ -46,6 +44,7 @@ public class MBOrderRepositoryTest {
             log.info("총 발주 금액: {}", order.getTotalPrice());
             log.info("입고일: {}", order.getStoreAt());
         }
+        assertThat(result).isNotEmpty();
     }
 
     @Test
@@ -69,6 +68,8 @@ public class MBOrderRepositoryTest {
                     status.getOrderId(),
                     status.getOrderStatus());
         }
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
     }
 
     @Test
@@ -81,7 +82,6 @@ public class MBOrderRepositoryTest {
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
-
     }
 
     @Test
@@ -95,10 +95,6 @@ public class MBOrderRepositoryTest {
                         null,
                         null
                 );
-
-        assertNotNull(result);
-        assertFalse(result.isEmpty());
-
         for (int i = 0; i < result.size(); i++) {
 
             OrderDTO order = result.get(i);
@@ -113,6 +109,10 @@ public class MBOrderRepositoryTest {
             Timestamp endDate =
                     Timestamp.valueOf("2026-11-13 00:00:00");
         }
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+
     }
 
     @Test
@@ -166,8 +166,8 @@ public class MBOrderRepositoryTest {
                         null
                 );
 
-        assertNotNull(result);
         log.info("여러 조건 동시 검색 결과 :{}",result);
+        assertNotNull(result);
     }
 
     @Test
@@ -176,7 +176,6 @@ public class MBOrderRepositoryTest {
         List<OrderInfoDTO> result =
                 mbOrderRepository.selectOrderInfo();
 
-        assertNotNull(result);
         for (OrderInfoDTO detail : result){
             log.info("발주번호 {}", detail.getOrderId() + "의 정보 ");
             log.info("발주일시 : {}", detail.getOrderAt());
@@ -188,6 +187,7 @@ public class MBOrderRepositoryTest {
             log.info("승인담당자 : {}", detail.getUserName());
             log.info("-----------------------------------------");
         }
+        assertNotNull(result);
     }
 
     @Test
@@ -208,15 +208,17 @@ public class MBOrderRepositoryTest {
             log.info("거절 사유: {}", detail.getRejectReason());
             log.info("-----------------------------------------");
         }
+
+
     }
 
     @Test
     void 직영점_식자재_목록_조회() {
 
-        List<IngredientDTO> result =
+        List<IngredientListDTO> result =
                 mbOrderRepository.findIngredients();
 
-        for (IngredientDTO i : result) {
+        for (IngredientListDTO i : result) {
             log.info("식자재명: {}", i.getIngredientName());
             log.info("공급가격: {}", i.getSupplyPrice());
             log.info("공급수량: {}", i.getSupplyQuantity());
