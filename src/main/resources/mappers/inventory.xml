@@ -4,7 +4,7 @@
 
 <mapper namespace="kr.swdl.foodingredientmanagement.repository.MBInventoryRepository">
 
-    <select id="findInventoryList" resultType="kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryListResponse">
+    <select id="findInventoryList" resultType="kr.swdl.foodingredientmanagement.dto.InventoryListResponseDTO">
         SELECT
             s.store_name AS storeName,
             i.ingredient_name AS ingredientName,
@@ -45,7 +45,7 @@
 
 
     <select id="findInventoryDetail"
-            resultType="kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryListResponse">
+            resultType="kr.swdl.foodingredientmanagement.dto.InventoryListResponseDTO">
         SELECT
             s.store_name                AS storeName,
             i.ingredient_name           AS ingredientName,
@@ -75,7 +75,7 @@
 
 
         <select id="findInventoryOrder"
-                resultType="kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryOrderResponse">
+                resultType="kr.swdl.foodingredientmanagement.dto.InventoryOrderResponseDTO">
             SELECT
                 od.manufacture_at                                          AS manufactureAt,
                 DATE_ADD(od.manufacture_at, INTERVAL i.expiration_period DAY) AS expirationDate,
@@ -94,7 +94,7 @@
 
 
     <select id="findInventoryUsageList"
-            resultType="kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryUsageListResponse">
+            resultType="kr.swdl.foodingredientmanagement.dto.InventoryUsageListResponseDTO">
 
         SELECT
             iu.consumption_at              AS consumptionAt,
@@ -117,7 +117,7 @@
 
 
     <select id="findStoreInventoryList"
-            resultType="kr.swdl.foodingredientmanagement.controller.responseDTO.InventoryListResponse">
+            resultType="kr.swdl.foodingredientmanagement.dto.InventoryListResponseDTO">
         SELECT
         s.store_name        AS storeName,
         i.sub_category_name AS subCategoryName,
@@ -141,13 +141,6 @@
         </if>
         ORDER BY i.sub_category_name, i.ingredient_name, od.store_at
     </select>
-
-
-
-
-
-
-
 
 
 

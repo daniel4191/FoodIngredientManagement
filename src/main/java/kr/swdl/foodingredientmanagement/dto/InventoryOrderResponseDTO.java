@@ -1,4 +1,4 @@
-package kr.swdl.foodingredientmanagement.controller.responseDTO;
+package kr.swdl.foodingredientmanagement.dto;
 
 import lombok.*;
 
@@ -9,9 +9,9 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class InventoryOrderResponse {
+public class InventoryOrderResponseDTO {
 
-
+    // 입고 정보
     private Timestamp manufactureAt;
     private Timestamp expirationDate;
     private Timestamp storeAt;
