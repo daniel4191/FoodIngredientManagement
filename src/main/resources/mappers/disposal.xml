@@ -117,8 +117,9 @@
                                  ON o.store_id = s.store_id
                  LEFT OUTER JOIN disposal_app_infos dai
                                  ON dai.disposal_id = d.disposal_id
-        WHERE s.store_id = #{storeId}
         <where>
+            s.store_id = #{storeId}
+
             <if test="ingredientName != null and ingredientName != ''">
                 AND i.ingredient_name LIKE CONCAT('%', #{ingredientName}, '%')
             </if>
