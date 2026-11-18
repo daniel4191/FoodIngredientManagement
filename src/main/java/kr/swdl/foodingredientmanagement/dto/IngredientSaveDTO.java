@@ -1,8 +1,10 @@
 package kr.swdl.foodingredientmanagement.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class IngredientSaveDTO extends IngredientListDTO{
 
     private String major_category_name;
